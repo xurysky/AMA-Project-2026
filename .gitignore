@@ -1,0 +1,37 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+*.egg-info/
+dist/
+build/
+
+# Environment
+.env
+.env.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Azure
+*.tfstate
+*.tfstate.backup
+.terraform/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Logs
+*.log
+logs/
