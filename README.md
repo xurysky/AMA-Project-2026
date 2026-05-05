@@ -102,7 +102,7 @@ python -m src.scenarios.scenario1_cross_channel
 ### Team
 
 - **Project Lead**: Yuan Wang
-- **Role**: Senior Solution Engineer, Azure & AI Platform
+- **Role**: Senior Solution Engineer, Cloud & AI Platform (CAIP)
 
 ### License
 
@@ -201,7 +201,7 @@ python -m src.scenarios.scenario1_cross_channel
 ### 团队
 
 - **项目负责人**: Yuan Wang (圆子)
-- **角色**: 资深解决方案工程师, Azure & AI 平台
+- **角色**: 资深解决方案工程师, Cloud & AI Platform (CAIP)
 
 ### 许可证
 

@@ -365,14 +365,14 @@ add_title_bar(slide, "Pricing Agent", "动态定价最大化利润")
 
 add_bullet_textbox(slide, Inches(0.8), Inches(1.7), Inches(5.5), Inches(5.0), [
     "职责：动态定价，最大化利润与周转率",
-    "技术：TT203 三层架构（Data → ML → LLM）",
+    "技术：Three-Layer Architecture（Data → ML → LLM）",
     "核心：价格弹性线性回归模型",
     "输出：最优价格 + 利润影响预测",
 ], font_size=17, color=DARK_TEXT)
 
 box = add_rounded_rect(slide, Inches(7.0), Inches(1.7), Inches(5.5), Inches(4.5), LIGHT_BLUE, DEEP_BLUE)
 add_textbox(slide, Inches(7.3), Inches(1.9), Inches(5.0), Inches(0.5),
-            "TT203 三层架构", font_size=20, color=DEEP_BLUE, bold=True, alignment=PP_ALIGN.CENTER)
+            "Three-Layer Architecture", font_size=20, color=DEEP_BLUE, bold=True, alignment=PP_ALIGN.CENTER)
 add_bullet_textbox(slide, Inches(7.3), Inches(2.6), Inches(5.0), Inches(3.5), [
     "Data Layer：清洗、聚合、特征工程",
     "ML Layer：价格弹性建模与优化",
@@ -586,7 +586,7 @@ add_textbox(slide, Inches(0.8), Inches(1.7), Inches(11.5), Inches(0.5),
 steps = [
     "① Pricing Agent\n监控竞品价格变动",
     "② 弹性分析\n价格弹性模型评估影响",
-    "③ 策略生成\nTT203 三层架构决策",
+    "③ 策略生成\nThree-Layer Architecture决策",
     "④ 人工审批\n关键价格变动需确认",
 ]
 for i, step in enumerate(steps):
