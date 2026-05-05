@@ -86,3 +86,62 @@
 - **中期**（6 个月）：扩展到 100 家门店，优化 Agent 协作
 - **长期**（12 个月）：全渠道覆盖，Agent 自主决策
 - **关键里程碑**：POC → MVP → Beta → GA
+
+## Q11: Agent 之间怎么协作？（Agentic Behavior — 评审重点）
+
+**回答要点：**
+- **Handoff 模式**：Inventory Agent 发现库存过高 → 通过 A2A Protocol 通知 Pricing Agent → Pricing Agent 返回调价建议 → Inventory Agent 确认执行
+- **Reflection 模式**：Marketing Agent 执行营销活动后，Customer Understanding Agent 分析效果反馈，Marketing Agent 据此调整策略
+- **State Graph**：所有 Agent 共享客户状态图，任何 Agent 的决策都会更新状态，其他 Agent 实时感知
+- **协调机制**：Azure AI Foundry 作为 Orchestrator，管理 Agent 间的任务分配和优先级
+- **Human-in-the-Loop**：关键决策（如大幅调价、大规模营销）需要人工确认
+
+## Q12: 安全怎么保证？（Security — 评审重点）
+
+**回答要点：**
+- **身份管理**：Azure Entra ID + Managed Identity，每个 Agent 有独立身份和最小权限
+- **数据保护**：Azure Purview 数据分类 + Cosmos DB 加密（静态+传输）+ 数据本地化
+- **网络安全**：Private Endpoints + Azure Front Door WAF + DDoS 防护
+- **AI 安全**：输入验证 + Prompt Injection 检测 + 输出过滤 + OWASP Top 10 合规
+- **增量实施**：Phase 1 基础安全 → Phase 2 身份与合规 → Phase 3 零信任
+- **合成 Persona**：客户理解 Agent 使用合成数据解决冷启动，不暴露真实客户 PII
+
+## Q13: CI/CD 和运维怎么做？（CI/CD + Day 2 Ops — 评审重点）
+
+**回答要点：**
+- **CI/CD 流水线**：GitHub Actions 自动化 → 代码质量检查 → 安全扫描 → 测试 → 构建 → 金丝雀部署（5%流量）→ 全量发布
+- **分支保护**：main 分支需要 PR + 审核 + 通过所有检查
+- **部署策略**：金丝雀部署 + 自动回滚（错误率>0.1%或延迟p95>2s自动回滚）
+- **Day 2 运维**：配置管理（Azure App Configuration）+ Feature Flags + A/B 测试 + 容量规划
+- **事件响应**：P1（15分钟响应）→ P2（1小时）→ P3（4小时），事后复盘
+
+## Q14: 系统出故障了怎么办？（Reliability — 评审重点）
+
+**回答要点：**
+- **高可用**：每个 Agent 3 副本 + 跨可用区部署 + Cosmos DB 多区域复制
+- **熔断器**：连续 5 次失败 → 自动熔断 → 30秒后半开测试 → 恢复后自动关闭
+- **优雅降级**：非关键 Agent 故障时跳过（Marketing Agent 故障不影响定价）
+- **灾难恢复**：RPO < 5分钟，RTO < 30分钟，季度 DR 演练
+- **具体场景**：Azure OpenAI 超时 → 使用缓存推荐 → 重试 → 降级到规则引擎
+
+## Q15: 这个方案跟竞品（Google/AWS）比有什么优势？
+
+**回答要点：**
+- **Azure OpenAI 独占**：GPT-4o 只在 Azure 上提供企业级 SLA
+- **AI Foundry**：一站式 Agent 开发+部署+监控，Google/AWS 没有等价产品
+- **Fabric 数据平台**：OneLake 统一数据湖，比 BigQuery/Redshift 更集成
+- **安全合规**：Entra ID + Purview + Defender 三位一体，企业客户首选
+- **亚洲覆盖**：东亚/东南亚区域多，数据本地化合规
+- **混合云**：Arc 支持混合部署，适合有本地需求的零售客户
+
+---
+
+## C-suite 角色速查表
+
+| 角色 | 关注点 | 准备方向 |
+|------|--------|----------|
+| **CEO** | ROI、业务价值、竞争差异 | "投入多少？多久回本？跟竞品比？" |
+| **CFO** | 成本控制、预算、TCO | "总成本多少？怎么分阶段投入？" |
+| **CTO** | 架构、可扩展性、技术选型 | "为什么选这个架构？怎么扩展？" |
+| **CISO** | 安全、合规、数据隐私 | "数据怎么保护？合规怎么做？" |
+| **COO** | Day 2 Ops、运维、部署 | "怎么更新？出问题怎么回滚？" |
