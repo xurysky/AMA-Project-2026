@@ -153,7 +153,7 @@ python src/scenarios/scenario3_pricing.py
 ## 👥 团队
 
 - **Project Lead**: Yuan Wang (圆子)
-- **Affiliation**: 复旦大学 MBA 2024 / 微软 Azure 云与 AI 平台事业部
+- **Role**: Senior Cloud Solution Architect, Azure & AI Platform
 
 ## 📄 License
 
