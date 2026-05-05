@@ -150,7 +150,7 @@ add_rect(slide, Inches(5), Inches(4.3), Inches(3.3), Inches(0.04), GOLD)
 # Presenter info
 add_multiline_textbox(slide, Inches(1), Inches(4.8), Inches(11.3), Inches(1.5),
     [
-        "汇报人：圆子  |  Senior Cloud Solution Architect",
+        "汇报人：圆子  |  Senior Solution Engineer",
         "AMA Capstone Project  |  Project 46"
     ], font_size=18, color=RGBColor(0xCC,0xCC,0xCC), alignment=PP_ALIGN.CENTER)
 
@@ -782,7 +782,7 @@ add_rect(slide, Inches(5), Inches(4.5), Inches(3.3), Inches(0.04), GOLD)
 add_multiline_textbox(slide, Inches(1), Inches(5.0), Inches(11.3), Inches(1.5), [
     "Q & A",
     "",
-    "汇报人：圆子  |  Senior Cloud Solution Architect",
+    "汇报人：圆子  |  Senior Solution Engineer",
     "Project 46 — Autonomous Retail Intelligence Agent Platform",
 ], font_size=18, color=RGBColor(0xCC,0xCC,0xCC), alignment=PP_ALIGN.CENTER)
 

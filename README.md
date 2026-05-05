@@ -153,7 +153,7 @@ python src/scenarios/scenario3_pricing.py
 ## 👥 团队
 
 - **Project Lead**: Yuan Wang (圆子)
-- **Role**: Senior Cloud Solution Architect, Azure & AI Platform
+- **Role**: Senior Solution Engineer, Azure & AI Platform
 
 ## 📄 License
 
