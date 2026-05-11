@@ -4,16 +4,16 @@ Marketing Agent
 """
 
 from typing import Any, Dict, List
-from openai import OpenAI
-from .base_agent import BaseAgent
+from .base_agent import BaseAgent, AzureConfig, AzureConfig
 
 
 class MarketingAgent(BaseAgent):
     """营销优化 Agent — 自主活动 + 预算优化"""
     
-    def __init__(self, openai_client: OpenAI):
+    def __init__(self, openai_client=None):
         super().__init__("marketing", "Marketing Agent")
-        self.openai = openai_client
+        self.openai = openai_client or AzureConfig.get_openai_client()
+        self.deployment = AzureConfig.get_deployment_name()
     
     async def process(self, input_data: Dict[str, Any]) -> Dict[str, Any]:
         """
@@ -55,7 +55,7 @@ class MarketingAgent(BaseAgent):
                                   budget: float, channels: List[str]) -> Dict[str, Any]:
         """LLM 生成活动方案"""
         response = self.openai.chat.completions.create(
-            model="gpt-4o",
+            model=self.deployment,
             messages=[
                 {"role": "system", "content": "你是一个零售营销专家。设计营销活动方案。"},
                 {"role": "user", "content": f"目标：{objective}，目标客群：{segment}，预算：{budget}，渠道：{channels}"}

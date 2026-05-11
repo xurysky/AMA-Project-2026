@@ -4,16 +4,16 @@ Inventory Agent
 """
 
 from typing import Any, Dict, List
-from openai import OpenAI
-from .base_agent import BaseAgent
+from .base_agent import BaseAgent, AzureConfig
 
 
 class InventoryAgent(BaseAgent):
     """库存优化 Agent — 精准预测 + 自动补货"""
     
-    def __init__(self, openai_client: OpenAI, ml_client):
+    def __init__(self, openai_client=None, ml_client=None):
         super().__init__("inventory", "Inventory Agent")
-        self.openai = openai_client
+        self.openai = openai_client or AzureConfig.get_openai_client()
+        self.deployment = AzureConfig.get_deployment_name()
         self.ml = ml_client
     
     async def process(self, input_data: Dict[str, Any]) -> Dict[str, Any]:

@@ -4,16 +4,16 @@ Personalization Agent
 """
 
 from typing import Any, Dict, List
-from openai import OpenAI
-from .base_agent import BaseAgent
+from .base_agent import BaseAgent, AzureConfig, AzureConfig
 
 
 class PersonalizationAgent(BaseAgent):
     """个性化推荐 Agent — 跨渠道千人千面"""
     
-    def __init__(self, openai_client: OpenAI, redis_client):
+    def __init__(self, openai_client=None, redis_client=None):
         super().__init__("personalization", "Personalization Agent")
-        self.openai = openai_client
+        self.openai = openai_client or AzureConfig.get_openai_client()
+        self.deployment = AzureConfig.get_deployment_name()
         self.redis = redis_client
     
     async def process(self, input_data: Dict[str, Any]) -> Dict[str, Any]:
@@ -70,7 +70,7 @@ class PersonalizationAgent(BaseAgent):
     async def _generate_recommendations(self, profile: Dict, candidates: List, context: Dict) -> List[Dict]:
         """LLM 生成推荐理由"""
         response = self.openai.chat.completions.create(
-            model="gpt-4o",
+            model=self.deployment,
             messages=[
                 {"role": "system", "content": "你是一个个性化推荐专家。为用户推荐商品并给出理由。"},
                 {"role": "user", "content": f"用户偏好：{profile.get('preferences', {})}\n候选商品：{candidates}\n场景：{context}"}
