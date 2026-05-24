@@ -1,0 +1,64 @@
+name: Deploy Azure Container Apps
+
+on:
+  workflow_dispatch:
+    inputs:
+      app_name:
+        description: Short lowercase app name
+        required: false
+        default: amaretail
+      location:
+        description: Azure region
+        required: false
+        default: eastasia
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  build-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Build image in ACR
+        run: |
+          IMAGE="${{ secrets.AZURE_CONTAINER_REGISTRY }}.azurecr.io/${{ inputs.app_name }}:${{ github.sha }}"
+          echo "IMAGE=$IMAGE" >> "$GITHUB_ENV"
+          az acr build \
+            --registry "${{ secrets.AZURE_CONTAINER_REGISTRY }}" \
+            --image "${{ inputs.app_name }}:${{ github.sha }}" \
+            .
+
+      - name: Deploy infrastructure and app
+        run: |
+          ACR_USERNAME="$(az acr credential show --name "${{ secrets.AZURE_CONTAINER_REGISTRY }}" --query username --output tsv)"
+          ACR_PASSWORD="$(az acr credential show --name "${{ secrets.AZURE_CONTAINER_REGISTRY }}" --query 'passwords[0].value' --output tsv)"
+          az deployment group create \
+            --resource-group "${{ secrets.AZURE_RESOURCE_GROUP }}" \
+            --template-file infra/main.bicep \
+            --parameters \
+              appName="${{ inputs.app_name }}" \
+              location="${{ inputs.location }}" \
+              containerImage="$IMAGE" \
+              containerRegistryServer="${{ secrets.AZURE_CONTAINER_REGISTRY }}.azurecr.io" \
+              containerRegistryUsername="$ACR_USERNAME" \
+              containerRegistryPassword="$ACR_PASSWORD" \
+              azureOpenAIEndpoint="${{ secrets.AZURE_OPENAI_ENDPOINT }}" \
+              azureOpenAIKey="${{ secrets.AZURE_OPENAI_KEY }}" \
+              azureOpenAIDeployment="${{ secrets.AZURE_OPENAI_DEPLOYMENT }}"
+
+      - name: Show API URL
+        run: |
+          az deployment group show \
+            --resource-group "${{ secrets.AZURE_RESOURCE_GROUP }}" \
+            --name main \
+            --query properties.outputs.apiUrl.value \
+            --output tsv

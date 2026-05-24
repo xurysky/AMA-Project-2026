@@ -4,16 +4,16 @@ Customer Understanding Agent
 """
 
 from typing import Any, Dict, List
-from openai import OpenAI
-from .base_agent import BaseAgent
+from .base_agent import BaseAgent, AzureConfig
 
 
 class CustomerUnderstandingAgent(BaseAgent):
     """客户理解 Agent — 构建 360° 客户视图"""
     
-    def __init__(self, openai_client: OpenAI, cosmos_client):
+    def __init__(self, openai_client=None, cosmos_client=None):
         super().__init__("customer_understanding", "Customer Understanding Agent")
-        self.openai = openai_client
+        self.openai = openai_client or AzureConfig.get_openai_client()
+        self.deployment = AzureConfig.get_deployment_name()
         self.cosmos = cosmos_client
     
     async def process(self, input_data: Dict[str, Any]) -> Dict[str, Any]:
@@ -82,7 +82,7 @@ class CustomerUnderstandingAgent(BaseAgent):
         recent_behavior = self._get_recent_behavior(channels)
         
         response = self.openai.chat.completions.create(
-            model="gpt-4o",
+            model=self.deployment,
             messages=[
                 {"role": "system", "content": "你是一个零售客户行为分析专家。根据用户行为推断其购物意图。"},
                 {"role": "user", "content": f"根据以下行为推断用户意图：{recent_behavior}"}

@@ -10,6 +10,15 @@ from datetime import datetime
 import logging
 import uuid
 import json
+import sys
+import os
+
+# 确保 src 目录在路径中
+_src_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+if _src_dir not in sys.path:
+    sys.path.insert(0, _src_dir)
+
+from config import AzureConfig
 
 logger = logging.getLogger(__name__)
 

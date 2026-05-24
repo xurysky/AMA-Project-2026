@@ -10,7 +10,7 @@ This document records the key architectural decisions made in the Autonomous Ret
 
 **Status:** Accepted
 
-**Context:** Uniqlo has multiple retail systems (POS, CRM, inventory, pricing, marketing) that currently operate independently. A monolithic AI system would create tight coupling and single points of failure.
+**Context:** Contoso Fashion has multiple retail systems (POS, CRM, inventory, pricing, marketing) that currently operate independently. A monolithic AI system would create tight coupling and single points of failure.
 
 **Decision:** Adopt a multi-agent architecture with 5 specialized agents, each owning a specific business domain.
 

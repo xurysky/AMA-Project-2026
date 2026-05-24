@@ -1,6 +1,6 @@
 # Q&A Preparation — 10 Questions the Panel May Ask
 
-## Q1: Why UNIQLO instead of other retailers?
+## Q1: Why Contoso Fashion instead of other retailers?
 
 **Key Points:**
 - **Best data foundation**: Full RFID coverage + "Management Dashboard" with 30M+ data points
@@ -21,7 +21,7 @@
 ## Q3: Where does the projected impact data come from?
 
 **Key Points:**
-- +40% sales: McKinsey research (AI personalization improves conversion by 20-35%) + UNIQLO's existing growth trends
+- +40% sales: McKinsey research (AI personalization improves conversion by 20-35%) + Contoso Fashion's existing growth trends
 - -50% inventory: Gartner research (AI demand forecasting reduces inventory by 20-50%)
 - 85% satisfaction: Forrester research (AI customer service improves satisfaction by 25%)
 - +60% CLV: Harvard research (personalization improves CLV by 40%)

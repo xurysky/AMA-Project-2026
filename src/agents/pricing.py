@@ -6,8 +6,7 @@ Data Layer (ML) → LLM Layer (Reasoning) → Application Layer (决策)
 from typing import Any, Dict, List, Tuple
 import numpy as np
 from sklearn.linear_model import LinearRegression
-from openai import OpenAI
-from .base_agent import BaseAgent
+from .base_agent import BaseAgent, AzureConfig
 
 
 class PriceElasticityModel:
@@ -95,9 +94,10 @@ class PricingAgent(BaseAgent):
     Layer 3: LLM Layer — 策略推理、异常分析、自然语言报告
     """
     
-    def __init__(self, openai_client: OpenAI):
+    def __init__(self, openai_client=None):
         super().__init__("pricing", "Pricing Agent")
-        self.openai = openai_client
+        self.openai = openai_client or AzureConfig.get_openai_client()
+        self.deployment = AzureConfig.get_deployment_name()
         self.elasticity_model = PriceElasticityModel()
     
     async def process(self, input_data: Dict[str, Any]) -> Dict[str, Any]:
@@ -210,7 +210,7 @@ ML 模型建议价格: ¥{ml_result['optimal_price']}
 """
         
         response = self.openai.chat.completions.create(
-            model="gpt-4o",
+            model=self.deployment,
             messages=[
                 {"role": "system", "content": "你是零售定价专家，基于计量经济学模型给出专业建议。"},
                 {"role": "user", "content": prompt}

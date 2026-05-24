@@ -243,7 +243,7 @@ All agents share a real-time customer state graph that updates as interactions h
 ### State Graph Structure
 ```json
 {
-  "customer_id": "UNIQLO_2026_001",
+  "customer_id": "CONTOSO_2026_001",
   "state": {
     "current_session": {
       "channel": "app",
