@@ -82,8 +82,8 @@
 ### Agent 1: Customer Understanding Agent
 **Contoso 服装店场景：**
 - 统一 2 亿+ 粉丝的线上（App/小程序/京东/天猫）和线下（900+ 门店 RFID）行为
-- 合成 Persona 模拟不同客户群体（TT205）
-- Agent Memory 存储跨渠道交互历史（WRK761）
+- 合成 Persona 模拟不同客户群体（Synthetic Persona）
+- Agent Memory 存储跨渠道交互历史（Agent Memory）
 
 ### Agent 2: Personalization Agent
 **Contoso 服装店场景：**
@@ -115,7 +115,7 @@
 - 日本 APPI：数据本地化 + 用户同意
 - 中国 PIPL：数据出境评估 + 安全审计
 - 新加坡 PDPA：跨境传输限制
-- **方案**：合成 Persona（TT205）解决冷启动 + 数据本地化存储
+- **方案**：合成 Persona（Synthetic Persona）解决冷启动 + 数据本地化存储
 
 ### 多语言
 - 中日韩 + 东南亚多语种

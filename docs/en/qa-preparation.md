@@ -30,7 +30,7 @@
 ## Q4: How does Asia-specific implementation work?
 
 **Key Points:**
-- **Privacy compliance**: Synthetic Persona (TT205) solves cold start + data localization (Cosmos DB Asia-Pacific regions)
+- **Privacy compliance**: Synthetic Persona (Synthetic Persona) solves cold start + data localization (Cosmos DB Asia-Pacific regions)
 - **Multilingual**: LLM's native multilingual capabilities + Agent language preference configuration
 - **Payment adaptation**: MCP protocol for unified API interfaces (APIM gateway)
 - **Urban-rural divide**: Agents adjust strategies based on store location (Tier 1 vs Tier 3-4 cities)

@@ -24,7 +24,7 @@ SUPPORTED_SEASONS = ["spring", "summer", "autumn", "winter"]
 @dataclass
 class AgentDecision:
     agent: str
-    course_sources: List[str]
+    method_sources: List[str]
     input_summary: Dict[str, Any]
     decision: Dict[str, Any]
     evidence: List[str]
@@ -35,7 +35,7 @@ class AgentDecision:
     def as_dict(self) -> Dict[str, Any]:
         return {
             "agent": self.agent,
-            "course_sources": self.course_sources,
+            "method_sources": self.method_sources,
             "input_summary": self.input_summary,
             "decision": self.decision,
             "evidence": self.evidence,
@@ -165,7 +165,7 @@ class RetailScenarioEngine:
             "decision_loop": [d.as_dict() for d in decisions],
             "human_approval_queue": approvals,
             "customers": state.get("customers", []),
-            "course_mapping": state["course_mapping"],
+            "method_mapping": state["method_mapping"],
             "data_sources": self._data_sources(),
             "executive_summary": self._executive_summary(state, decisions, approvals),
             "architecture_note": {
@@ -195,7 +195,7 @@ class RetailScenarioEngine:
             },
             "channel_metrics": base["channel_metrics"],
             "business_constraints": base["business_constraints"],
-            "course_mapping": base["course_mapping"],
+            "method_mapping": base["method_mapping"],
         }
         scenarios: Dict[str, Dict[str, Any]] = {
             "spring": {
@@ -357,7 +357,7 @@ class RetailScenarioEngine:
 
         return AgentDecision(
             agent="Inventory Agent",
-            course_sources=["TT203 Hybrid AI", "Agentic AI data-to-decision pattern"],
+            method_sources=["Hybrid AI", "Agentic AI data-to-decision pattern"],
             input_summary={
                 "event": f"{event['city']} {event.get('season', 'seasonal')} demand signal: {event['type']}",
                 "products_evaluated": len(products),
@@ -453,7 +453,7 @@ class RetailScenarioEngine:
 
         return AgentDecision(
             agent="Pricing Agent",
-            course_sources=["TT203 Data -> ML Validator -> LLM Reasoning", "LAB184 Responsible AI guardrails"],
+            method_sources=["Data -> ML Validator -> LLM Reasoning", "Responsible AI guardrails"],
             input_summary={
                 "received_from": "Inventory Agent",
                 "pricing_constraints": constraints,
@@ -466,7 +466,7 @@ class RetailScenarioEngine:
             },
             evidence=[
                 "Pricing uses inventory risk instead of optimizing price in isolation.",
-                "TT203-style promo history validates discount candidates with predicted lift, incremental profit, and ROI.",
+                "Hybrid AI promo history validates discount candidates with predicted lift, incremental profit, and ROI.",
                 "High stockout risk blocks broad discounting even when demand is high.",
                 "Price changes beyond threshold or negative ROI require human approval and audit log.",
             ],
@@ -499,7 +499,7 @@ class RetailScenarioEngine:
 
         return AgentDecision(
             agent="Customer Understanding Agent",
-            course_sources=["TT205 Synthetic Persona", "BRK180 Understand pillar", "WRK761 Personal memory"],
+            method_sources=["Synthetic Persona", "Understand pillar", "Personal memory"],
             input_summary={
                 "customers_evaluated": len(state["customers"]),
                 "signals": ["recent views", "cart", "purchase history", "location", "consent", "channel preference"],
@@ -548,7 +548,7 @@ class RetailScenarioEngine:
 
         return AgentDecision(
             agent="Personalization Agent",
-            course_sources=["BRK180 Understand -> Act -> Learn", "WRK761 memory-aware personalization"],
+            method_sources=["Understand -> Act -> Learn", "memory-aware personalization"],
             input_summary={
                 "received_from": ["Customer Understanding Agent", "Inventory Agent", "Pricing Agent"],
                 "customers_personalized": len(recommendations),
@@ -592,7 +592,7 @@ class RetailScenarioEngine:
 
         return AgentDecision(
             agent="Marketing Agent",
-            course_sources=["BRK180 Act/Learn loop", "TT203 constrained optimization", "LAB184 Responsible AI"],
+            method_sources=["Act/Learn loop", "Hybrid AI constrained optimization", "Responsible AI"],
             input_summary={
                 "received_from": ["Customer Understanding Agent", "Personalization Agent", "Inventory Agent"],
                 "eligible_customers": len(eligible_customers),
@@ -646,7 +646,7 @@ class RetailScenarioEngine:
             {"source": "App / WeChat Mini Program", "signals": "views, cart adds, searches", "azure_service": "Event Hubs / Cosmos DB"},
             {"source": "CRM / Membership", "signals": "tier, consent, lifetime value", "azure_service": "Cosmos DB"},
             {"source": "Competitor Monitoring", "signals": "Zara/H&M/GAP prices", "azure_service": "MCP tools via APIM"},
-            {"source": "TT203 Apparel-Mapped Promo History", "signals": "discount, measured lift, incremental profit, promo ROI", "azure_service": "Fabric / Azure ML"},
+            {"source": "Apparel-Mapped Promo History", "signals": "discount, measured lift, incremental profit, promo ROI", "azure_service": "Fabric / Azure ML"},
             {"source": "Agent Memory", "signals": "prior campaign outcomes, customer preferences", "azure_service": "Cosmos DB vector search / Foundry Memory"},
         ]
 

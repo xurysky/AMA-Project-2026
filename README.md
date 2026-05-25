@@ -152,7 +152,7 @@ See also:
 | [Performance & Reliability](docs/en/performance-reliability.md) | HA, DR, scalability |
 | [Azure-native Deployment](docs/en/azure-native-deployment.md) | Container Apps + Cosmos DB deployment path |
 | [Testing Strategy](docs/en/testing-strategy.md) | Multi-layer testing |
-| [Tech Integration](docs/en/tech-integration.md) | Course knowledge mapping |
+| [Tech Integration](docs/en/tech-integration.md) | Design Pattern knowledge mapping |
 | [Implementation Plan](docs/en/implementation.md) | Step-by-step guide |
 | [Q&A Preparation](docs/en/qa-preparation.md) | 15 panel questions + C-suite cheat sheet |
 
@@ -269,7 +269,7 @@ Azure Static Web Apps / 浏览器
 | [性能与可靠性](docs/zh/performance-reliability.md) | 高可用、灾备、扩展性 |
 | [Azure 云原生部署](docs/zh/azure-native-deployment.md) | Container Apps + Cosmos DB 部署路径 |
 | [测试策略](docs/zh/testing-strategy.md) | 多层测试 |
-| [技术集成](docs/zh/tech-integration.md) | 课程知识映射 |
+| [技术集成](docs/zh/tech-integration.md) | 技术模式映射 |
 | [实现计划](docs/zh/implementation.md) | 分步指南 |
 | [Q&A 准备](docs/zh/qa-preparation.md) | 15 个 Panel 问题 + C-suite 速查表 |
 

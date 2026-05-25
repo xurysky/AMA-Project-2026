@@ -290,7 +290,7 @@ def build_execution_trace(result: Dict[str, Any]) -> List[Dict[str, Any]]:
         return [
             {"service": "Azure Cosmos DB", "operation": "query", "detail": "Read stock_risk_by_sku from Inventory Agent shared memory", "latency_ms": 8, "status": "ok"},
             {"service": "API Management", "operation": "call", "detail": "Fetched competitor prices (Zara/H&M/GAP) via MCP proxy", "latency_ms": 220, "status": "ok"},
-            {"service": "Microsoft Fabric OneLake", "operation": "query", "detail": "Queried TT203 apparel promo history (lift, ROI, incremental profit)", "latency_ms": 95, "status": "ok"},
+            {"service": "Microsoft Fabric OneLake", "operation": "query", "detail": "Queried Hybrid AI apparel promo history (lift, ROI, incremental profit)", "latency_ms": 95, "status": "ok"},
             {"service": "Azure OpenAI GPT-4o", "operation": "chat_completions", "detail": "Reasoning: pricing strategy selection under inventory constraints", "latency_ms": 680, "status": "ok", "tokens": {"prompt": 1840, "completion": 420}, "model": "gpt-4o", "system_prompt": "You are a retail pricing agent. Select strategy based on inventory risk and margin floor.", "output_summary": f"Strategies: {', '.join(strategies)}"},
             {"service": "Azure Cosmos DB", "operation": "write", "detail": "Wrote pricing_actions + promotion_validation to shared_memory", "latency_ms": 12, "status": "ok"},
         ]
@@ -931,7 +931,7 @@ def build_compliance_decision(state: Dict[str, Any], decisions: List[Dict[str, A
                 flags.append({"agent": d["agent"], "issue": "Campaign requires human approval before execution", "severity": "medium"})
     return {
         "agent": "Compliance Agent",
-        "course_sources": ["LAB184 Responsible AI", "PIPL/PDPA/DPDP data residency"],
+        "method_sources": ["Responsible AI", "PIPL/PDPA/DPDP data residency"],
         "input_summary": {
             "region": region,
             "compliance_framework": framework,

@@ -137,4 +137,4 @@ When system is under extreme load:
 
 - Azure Reliability Best Practices: https://learn.microsoft.com/azure/architecture/checklist/reliability
 - Circuit Breaker Pattern: https://learn.microsoft.com/azure/architecture/patterns/circuit-breaker
-- Performance optimization based on BRK177 (Foundry AI Gateway) course material
+- Performance optimization based on Foundry Gateway (Foundry AI Gateway) design reference

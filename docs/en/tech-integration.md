@@ -1,21 +1,21 @@
-# Technical Architecture — Course Knowledge Integration
+# Technical Architecture — Design Pattern Knowledge Integration
 
-## Course Technical Points Mapping
+## Design Pattern Technical Points Mapping
 
-| Course | Core Technology | Integration Point |
+| Design Pattern | Core Technology | Integration Point |
 |--------|----------------|-------------------|
-| **TT205** Synthetic Persona | TinyTroupe virtual customers | Customer Understanding Agent cold start |
-| **TT203** Three-Layer Hybrid Architecture | Data(ML) → LLM → App | Decision architecture for all Agents |
-| **TT203** Econometrics | Linear regression / price elasticity | Pricing Agent pricing model |
-| **WRK761** Agent Memory | Episodic + Long-term | Memory mechanism for all Agents |
-| **BRK180** GenAI Personalization | Understand-Act-Learn | Personalization Agent |
-| **BRK177** Foundry AI Gateway | Production-grade architecture | Infrastructure layer |
-| **LAB181** Multi-Agent | Agent collaboration | Orchestration layer |
-| **LAB184** Responsible AI | Security & compliance | Global |
+| **Synthetic Persona** Synthetic Persona | TinyTroupe virtual customers | Customer Understanding Agent cold start |
+| **Hybrid AI** Three-Layer Hybrid Architecture | Data(ML) → LLM → App | Decision architecture for all Agents |
+| **Hybrid AI** Econometrics | Linear regression / price elasticity | Pricing Agent pricing model |
+| **Agent Memory** Agent Memory | Episodic + Long-term | Memory mechanism for all Agents |
+| **U-A-L** GenAI Personalization | Understand-Act-Learn | Personalization Agent |
+| **Foundry Gateway** Foundry AI Gateway | Production-grade architecture | Infrastructure layer |
+| **Multi-Agent** Multi-Agent | Agent collaboration | Orchestration layer |
+| **Responsible AI** Responsible AI | Security & compliance | Global |
 
 ---
 
-## 1. Synthetic Persona (TT205) — Cold Start Solution
+## 1. Synthetic Persona (Synthetic Persona) — Cold Start Solution
 
 ### Problem
 New customers have no historical data, making it impossible for Agents to personalize.
@@ -31,7 +31,7 @@ from tinytroupe.environment import TinyWorld
 
 class SyntheticPersonaGenerator:
     """
-    Based on TT205 course: Synthetic Persona Generator
+    Based on the synthetic persona pattern: Synthetic Persona Generator
     Uses TinyTroupe to create virtual customers, solving the cold start problem
     """
     
@@ -135,7 +135,7 @@ class SyntheticPersonaGenerator:
 
 ---
 
-## 2. Econometric Model (TT203) — Price Elasticity
+## 2. Econometric Model (Hybrid AI) — Price Elasticity
 
 ### Problem
 How to set prices scientifically to maximize profit?
@@ -152,7 +152,7 @@ from typing import Dict, List, Tuple
 
 class PriceElasticityModel:
     """
-    Based on TT203 course: Econometric linear regression
+    Based on the Hybrid AI pattern: Econometric linear regression
     Estimates price elasticity coefficients for dynamic pricing
     """
     
@@ -243,7 +243,7 @@ class PriceElasticityModel:
 
 ---
 
-## 3. TT203 Three-Layer Hybrid Architecture
+## 3. Hybrid AI Three-Layer Hybrid Architecture
 
 ### Architecture
 ```
@@ -268,7 +268,7 @@ class PriceElasticityModel:
 
 class HybridAgent(BaseAgent):
     """
-    Based on TT203 course: Three-layer hybrid architecture
+    Based on the Hybrid AI pattern: Three-layer hybrid architecture
     Data Layer → ML Layer → LLM Layer
     """
     
@@ -298,7 +298,7 @@ class HybridAgent(BaseAgent):
 
 ---
 
-## 4. Agent Memory (WRK761)
+## 4. Agent Memory (Agent Memory)
 
 ### Memory Architecture
 ```
@@ -331,7 +331,7 @@ import json
 
 class AgentMemory:
     """
-    Based on WRK761 course: Agent Memory architecture
+    Based on the agent memory pattern: Agent Memory architecture
     Episodic + Long-term + Semantic three-layer memory
     """
     
@@ -401,15 +401,15 @@ class AgentMemory:
 
 ---
 
-## Course Integration Summary
+## Design Pattern Integration Summary
 
-| Course | Technology | Integrated Agent | Value |
+| Design Pattern | Technology | Integrated Agent | Value |
 |--------|-----------|-----------------|-------|
-| TT205 | Synthetic Persona | Customer Understanding | Cold start + privacy protection |
-| TT203 | Three-Layer Hybrid Architecture | All Agents | ML precision + LLM reasoning |
-| TT203 | Linear Regression / Elasticity | Pricing | Scientific pricing |
-| WRK761 | Agent Memory | All Agents | Continuous learning |
-| BRK180 | U-A-L Three Pillars | Personalization | Personalization closed loop |
-| BRK177 | Foundry Gateway | Infrastructure | Production-grade architecture |
-| LAB181 | Multi-Agent Collaboration | Orchestration | End-to-end automation |
-| LAB184 | Responsible AI | Global | Compliance + security |
+| Synthetic Persona | Synthetic Persona | Customer Understanding | Cold start + privacy protection |
+| Hybrid AI | Three-Layer Hybrid Architecture | All Agents | ML precision + LLM reasoning |
+| Hybrid AI | Linear Regression / Elasticity | Pricing | Scientific pricing |
+| Agent Memory | Agent Memory | All Agents | Continuous learning |
+| U-A-L | U-A-L Three Pillars | Personalization | Personalization closed loop |
+| Foundry Gateway | Foundry Gateway | Infrastructure | Production-grade architecture |
+| Multi-Agent | Multi-Agent Collaboration | Orchestration | End-to-end automation |
+| Responsible AI | Responsible AI | Global | Compliance + security |

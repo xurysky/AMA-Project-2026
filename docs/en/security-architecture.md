@@ -55,7 +55,7 @@ Agent Identity Architecture:
 | **Internal** | Inventory data, pricing models | Encrypted in transit |
 | **Public** | Product catalog, store locations | Standard protection |
 
-### Synthetic Persona for Privacy (TT205)
+### Synthetic Persona for Privacy (Synthetic Persona)
 - **Customer Understanding Agent** uses synthetic personas for cold-start scenarios
 - Real customer data is never used for model training
 - Synthetic data generation follows differential privacy principles
@@ -150,4 +150,4 @@ Private Endpoint → Cosmos DB / OpenAI / Fabric
 
 - Azure Security Best Practices: https://learn.microsoft.com/azure/security/
 - OWASP Top 10 for LLM Applications: https://owasp.org/www-project-top-10-for-large-language-model-applications/
-- Zero Trust Architecture: Based on LAB184 (Responsible AI) course material
+- Zero Trust Architecture: Based on Responsible AI (Responsible AI) design reference

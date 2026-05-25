@@ -1,6 +1,6 @@
-"""TT203-style promotion validator for the AMA Retail Agent demo.
+"""Hybrid AI promotion validator for the AMA Retail Agent demo.
 
-The data file is a cleaned, apparel-mapped version of the TT203 retail promotion
+The data file is a cleaned, apparel-mapped version of the Hybrid AI retail promotion
 planning pattern: historical SKU, discount, measured lift, incremental profit,
 and ROI. It is demo/simulation data, not real Contoso Fashion sales.
 """
@@ -13,7 +13,7 @@ from pathlib import Path
 from statistics import mean
 from typing import Any, Dict, List
 
-DATA_PATH = Path(__file__).resolve().parents[2] / "data" / "tt203" / "apparel_promo_history.csv"
+DATA_PATH = Path(__file__).resolve().parents[2] / "data" / "promo_validation" / "apparel_promo_history.csv"
 
 
 @dataclass
@@ -91,9 +91,9 @@ class PromotionValidator:
         )
 
         return {
-            "validator": "TT203_econometric_style_promotion_validator",
+            "validator": "econometric_promotion_validator",
             "data_source": str(self.data_path.relative_to(Path(__file__).resolve().parents[2])),
-            "source_positioning": "Apparel-mapped TT203 retail promo pattern; demo simulation, not real Contoso Fashion sales.",
+            "source_positioning": "Apparel-mapped Hybrid AI retail promo pattern; demo simulation, not real Contoso Fashion sales.",
             "candidate_discount_pct": scenario.discount_pct,
             "comparable_category": scenario.category,
             "nearest_historical_discount_pct": nearest,

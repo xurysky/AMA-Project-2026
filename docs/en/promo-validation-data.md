@@ -1,18 +1,18 @@
-# TT203 Retail Promotion Data Reuse
+# Hybrid AI Retail Promotion Data Reuse
 
-## Why reuse the TT203 data pattern
+## Why reuse the Hybrid AI data pattern
 
-The original AMA demo was too mock-heavy: price, inventory, sales, discount, and ROI were not connected by an explainable decision model. TT203 provides the missing pattern:
+The original AMA demo was too mock-heavy: price, inventory, sales, discount, and ROI were not connected by an explainable decision model. Hybrid AI provides the missing pattern:
 
 > Data Layer (historical SKUs / discounts / measured lift) → ML / Econometric Validator (uplift, incremental profit, ROI) → LLM Business Reasoning (promotion candidates) → Human Approval.
 
-This project adds `data/tt203/apparel_promo_history.csv` as the data source for Pricing Agent promotion validation.
+This project adds `data/promo_validation/apparel_promo_history.csv` as the data source for Pricing Agent promotion validation.
 
 ## Data positioning
 
-The file is an **apparel-mapped demo dataset based on the TT203 retail promotion planning pattern**:
+The file is an **apparel-mapped demo dataset based on the retail promotion planning pattern**:
 
-- It preserves the TT203-style structure: historical SKU, discount, measured lift, promo investment, incremental profit, profit ROI, and stockout risk.
+- It preserves the Hybrid AI structure: historical SKU, discount, measured lift, promo investment, incremental profit, profit ROI, and stockout risk.
 - It semantically maps grocery/CPG items to apparel retail SKUs:
   - `12-pack Soft Drinks` → `HEATTECH Crew Neck Innerwear 2-Pack`
   - `24-pack Soft Drinks` → `HEATTECH Kids Innerwear Set`
@@ -33,14 +33,14 @@ The goal is not to disguise grocery data as apparel data. The goal is to reuse t
 
 ## Code integration
 
-- Data: `data/tt203/apparel_promo_history.csv`
+- Data: `data/promo_validation/apparel_promo_history.csv`
 - Validator: `src/simulators/promotion_validator.py`
 - Agent integration: `Pricing Agent` in `src/scenario_engine.py`
 
 The Pricing Agent now:
 
 1. Produces final price actions based on inventory risk and competitor price.
-2. Validates the final action using the TT203-style validator.
+2. Validates the final action using the Hybrid AI validator.
 3. Evaluates LLM-generated promotion candidates at 5%, 10%, and 15% discount levels.
 4. Flags negative ROI, deep discounts, and discounts that amplify stockout risk.
 5. Routes risky actions to human approval.
@@ -49,7 +49,7 @@ The Pricing Agent now:
 
 Recommended wording:
 
-> We reused the TT203 retail promotion planning data pattern and mapped it into apparel SKUs, so the prototype can demonstrate discount validation, predicted uplift, incremental profit, and ROI guardrails. This is simulation data for architecture validation, not claimed real Contoso Fashion performance data.
+> We reused the Hybrid AI retail promotion planning data pattern and mapped it into apparel SKUs, so the prototype can demonstrate discount validation, predicted uplift, incremental profit, and ROI guardrails. This is simulation data for architecture validation, not claimed real Contoso Fashion performance data.
 
 Avoid saying:
 

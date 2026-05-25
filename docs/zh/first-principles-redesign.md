@@ -19,7 +19,7 @@
 - 五个 Agent 消费前序 Agent 输出，而不是孤立硬编码
 - 专业 Agent Control Tower UI：`/`
 - 场景 API：`/api/v1/scenario/cold-snap`
-- API 输出中包含课程知识映射和数据来源映射
+- API 输出中包含技术模式映射和数据来源映射
 
 原型不声称已经验证生产 ROI。销售 +40%、库存浪费 -50%、满意度 85%、CLV +60% 是课题目标假设，不是当前 demo 已验证结果。
 
@@ -33,15 +33,15 @@
 | Personalization Agent | 每个客户下一步该看到什么？ | 客户意图、库存风险、价格策略 | 个性化推荐和理由 |
 | Marketing Agent | 触达谁、用什么渠道、花多少预算？ | 推荐、渠道指标、库存风险、授权 | 营销计划、A/B 测试、审批队列 |
 
-## 4. 课程知识映射
+## 4. 技术模式映射
 
-- **TT205**：合成 Persona 与客户行为模拟，用于客户理解和冷启动。
-- **BRK180**：Understand -> Act -> Learn 个性化闭环。
-- **TT203**：Hybrid AI：数据层 + ML 校验 + LLM 业务推理。
-- **WRK761**：Agent Memory：短期、情节、长期记忆。
-- **HYB782**：MCP/API Gateway，用于连接零售工具、竞品监控、支付和渠道 API。
-- **LAB181**：多 Agent 应用模式和 Spec Driven Development。
-- **LAB184**：Responsible AI、隐私、审批和审计。
+- **Synthetic Persona**：合成 Persona 与客户行为模拟，用于客户理解和冷启动。
+- **U-A-L**：Understand -> Act -> Learn 个性化闭环。
+- **Hybrid AI**：数据层 + ML 校验 + LLM 业务推理。
+- **Agent Memory**：Agent Memory：短期、情节、长期记忆。
+- **Real-Time Architecture**：MCP/API Gateway，用于连接零售工具、竞品监控、支付和渠道 API。
+- **Multi-Agent**：多 Agent 应用模式和 Spec Driven Development。
+- **Responsible AI**：Responsible AI、隐私、审批和审计。
 
 ## 5. Azure 原生目标架构
 

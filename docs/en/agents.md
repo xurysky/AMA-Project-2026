@@ -17,7 +17,7 @@ Build a unified customer profile from multi-channel behaviors to achieve a 360°
 ### Core Capabilities
 1. **Unified Identity Resolution**: Cross-channel ID-Mapping (phone number, WeChat OpenID, member ID, device ID)
 2. **Behavioral Sequence Modeling**: Temporal Transformer encoding of user behavior paths
-3. **Synthetic Persona**: Generate virtual customers based on TT205 to address cold start and privacy issues
+3. **Synthetic Persona**: Generate virtual customers based on Synthetic Persona to address cold start and privacy issues
 4. **Agent Memory**: Episodic (short-term interactions) + Long-term (long-term preferences) memory architecture
 
 ### Outputs
@@ -58,8 +58,8 @@ Dynamically customize product displays, emails, and recommendations based on cus
 | Historical Conversion | Cosmos DB | Recommendation optimization |
 
 ### Core Capabilities
-1. **U-A-L Three Pillars** (BRK180): Understand → Act → Learn
-2. **Hybrid AI** (TT203): LLM reasoning + ML precision
+1. **U-A-L Three Pillars** (U-A-L): Understand → Act → Learn
+2. **Hybrid AI**:  LLM reasoning + ML precision
 3. **Cross-channel Consistency**: Unified recommendations across App → Store → Mini Program
 4. **Real-time Personalization**: Page load response <200ms
 
@@ -143,7 +143,7 @@ Dynamic pricing based on demand / competition / inventory to maximize profit.
 | Cost Data | ERP System | Profit floor |
 
 ### Core Capabilities
-1. **Three-layer Architecture** (TT203): Data → ML → LLM
+1. **Three-layer Architecture** (Hybrid AI): Data → ML → LLM
 2. **Price Elasticity Modeling**: Bayesian regression to estimate elasticity coefficients
 3. **Competitive Response**: Real-time monitoring of competitor price changes
 4. **Human-in-the-Loop**: Key decisions require human confirmation

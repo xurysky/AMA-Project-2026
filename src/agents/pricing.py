@@ -1,5 +1,5 @@
 """
-Pricing Agent — 基于 TT203 三层混合架构
+Pricing Agent — 基于 三层混合架构
 Data Layer (ML) → LLM Layer (Reasoning) → Application Layer (决策)
 """
 
@@ -12,7 +12,7 @@ from .base_agent import BaseAgent, AzureConfig
 class PriceElasticityModel:
     """
     计量经济学线性回归模型
-    基于 TT203 课程：用对数-对数模型估算价格弹性
+    基于 Hybrid AI 方法：用对数-对数模型估算价格弹性
     """
     
     def __init__(self):
@@ -87,7 +87,7 @@ class PriceElasticityModel:
 
 class PricingAgent(BaseAgent):
     """
-    动态定价 Agent — TT203 三层混合架构
+    动态定价 Agent — 三层混合架构
     
     Layer 1: Data Layer — 历史销售、竞争价格、库存水平
     Layer 2: ML Layer — 价格弹性模型（线性回归）

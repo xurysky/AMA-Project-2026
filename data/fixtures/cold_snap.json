@@ -221,13 +221,13 @@
     "privacy_regime": "PIPL / APPI / PDPA-ready design",
     "audit_required": true
   },
-  "course_mapping": {
-    "TT205": "Synthetic Persona and customer behavior simulation for cold-start customer understanding",
-    "BRK180": "Understand -> Act -> Learn personalization loop",
-    "TT203": "Hybrid AI: Data layer + ML validation + LLM business reasoning",
-    "WRK761": "Short-term, episodic, and long-term agent memory",
-    "HYB782": "MCP/API gateway for tool and retail system integration",
-    "LAB181": "Multi-agent application patterns and spec-driven development",
-    "LAB184": "Responsible AI, human approval, privacy, and auditability"
+  "method_mapping": {
+    "Synthetic Persona": "Synthetic Persona and customer behavior simulation for cold-start customer understanding",
+    "U-A-L": "Understand -> Act -> Learn personalization loop",
+    "Hybrid AI": "Hybrid AI: Data layer + ML validation + LLM business reasoning",
+    "Agent Memory": "Short-term, episodic, and long-term agent memory",
+    "Real-Time Architecture": "MCP/API gateway for tool and retail system integration",
+    "Multi-Agent": "Multi-agent application patterns and spec-driven development",
+    "Responsible AI": "Responsible AI, human approval, privacy, and auditability"
   }
 }

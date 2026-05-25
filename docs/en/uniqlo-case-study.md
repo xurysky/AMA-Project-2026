@@ -82,8 +82,8 @@
 ### Agent 1: Customer Understanding Agent
 **Contoso Fashion Scenarios:**
 - Unify 200M+ followers' online (App/Mini Program/JD.com/Tmall) and offline (900+ store RFID) behavior
-- Synthetic Persona simulating different customer segments (TT205)
-- Agent Memory storing cross-channel interaction history (WRK761)
+- Synthetic Persona simulating different customer segments (Synthetic Persona)
+- Agent Memory storing cross-channel interaction history (Agent Memory)
 
 ### Agent 2: Personalization Agent
 **Contoso Fashion Scenarios:**
@@ -115,7 +115,7 @@
 - Japan APPI: Data localization + user consent
 - China PIPL: Data export assessment + security audit
 - Singapore PDPA: Cross-border transfer restrictions
-- **Solution**: Synthetic Persona (TT205) for cold start + data localization storage
+- **Solution**: Synthetic Persona (Synthetic Persona) for cold start + data localization storage
 
 ### Multilingual
 - Chinese, Japanese, Korean + Southeast Asian languages

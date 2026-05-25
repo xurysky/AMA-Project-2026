@@ -19,7 +19,7 @@ The current prototype implements:
 - Five agent decisions that consume prior outputs instead of isolated hard-coded calls
 - Professional Agent Control Tower UI: `/`
 - Scenario API: `/api/v1/scenario/cold-snap`
-- Explicit course mapping and data-source mapping in the API output
+- Explicit method mapping and data-source mapping in the API output
 
 It does **not** claim validated production ROI. Business metrics such as sales +40%, waste -50%, satisfaction 85%, and CLV +60% are target hypotheses from the project brief.
 
@@ -33,15 +33,15 @@ It does **not** claim validated production ROI. Business metrics such as sales +
 | Personalization Agent | What should each customer see next? | customer intent, inventory risk, price strategy | next-best recommendations and reasons |
 | Marketing Agent | Who should be touched, through which channel, with what budget? | personalization, channel metrics, inventory risk, consent | campaign plan, A/B test, approval queue |
 
-## 4. Course integration
+## 4. Design Pattern integration
 
-- **TT205**: Synthetic persona and customer behavior simulation for customer understanding and cold-start scenarios.
-- **BRK180**: Understand -> Act -> Learn personalization loop.
-- **TT203**: Hybrid AI architecture: data layer + ML validation + LLM business reasoning.
-- **WRK761**: Agent memory design: short-term, episodic, long-term memory.
-- **HYB782**: MCP/API gateway for retail tools, competitor monitoring, payment/channel APIs.
-- **LAB181**: Multi-agent application patterns and spec-driven development.
-- **LAB184**: Responsible AI, privacy, approval, and auditability.
+- **Synthetic Persona**: Synthetic persona and customer behavior simulation for customer understanding and cold-start scenarios.
+- **U-A-L**: Understand -> Act -> Learn personalization loop.
+- **Hybrid AI**: data + ML validation + LLM business reasoning: data layer + ML validation + LLM business reasoning.
+- **Agent Memory**: Agent memory design: short-term, episodic, long-term memory.
+- **Real-Time Architecture**: MCP/API gateway for retail tools, competitor monitoring, payment/channel APIs.
+- **Multi-Agent**: Multi-agent application patterns and spec-driven development.
+- **Responsible AI**: Responsible AI, privacy, approval, and auditability.
 
 ## 5. Azure-native target architecture
 
