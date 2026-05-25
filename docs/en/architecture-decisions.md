@@ -10,7 +10,7 @@ This document records the key architectural decisions made in the Autonomous Ret
 
 **Status:** Accepted
 
-**Context:** Uniqlo has multiple retail systems (POS, CRM, inventory, pricing, marketing) that currently operate independently. A monolithic AI system would create tight coupling and single points of failure.
+**Context:** Contoso Fashion has multiple retail systems (POS, CRM, inventory, pricing, marketing) that currently operate independently. A monolithic AI system would create tight coupling and single points of failure.
 
 **Decision:** Adopt a multi-agent architecture with 5 specialized agents, each owning a specific business domain.
 
@@ -100,7 +100,7 @@ This document records the key architectural decisions made in the Autonomous Ret
 
 **Context:** Customer Understanding Agent needs customer data for personalization, but Asia has strict privacy laws (China PIPL, Japan APPI, Singapore PDPA).
 
-**Decision:** Use synthetic personas (TT205/TinyTroupe) for cold-start and model training, with real data only for production inference with explicit consent.
+**Decision:** Use synthetic personas (TinyTroupe) for cold-start and model training, with real data only for production inference with explicit consent.
 
 **Rationale:**
 - **Privacy by Design**: No real PII used for model training

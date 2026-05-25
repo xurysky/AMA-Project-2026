@@ -17,14 +17,14 @@ class AzureConfig:
         "AZURE_OPENAI_ENDPOINT",
         "https://aif-ni7mzwp3nog6i.cognitiveservices.azure.com/"
     )
-    AZURE_OPENAI_API_KEY = os.getenv("AZURE_OPENAI_API_KEY", "")
+    AZURE_OPENAI_API_KEY = os.getenv("AZURE_OPENAI_API_KEY") or os.getenv("AZURE_OPENAI_KEY", "")
     AZURE_OPENAI_API_VERSION = os.getenv("AZURE_OPENAI_API_VERSION", "2025-04-01-preview")
-    AZURE_OPENAI_DEPLOYMENT = os.getenv("AZURE_OPENAI_DEPLOYMENT", "gpt-5.4-mini")
+    AZURE_OPENAI_DEPLOYMENT = os.getenv("AZURE_OPENAI_DEPLOYMENT", "gpt-4o")
 
     # Cosmos DB
-    COSMOS_DB_ENDPOINT = os.getenv("COSMOS_DB_ENDPOINT", "")
-    COSMOS_DB_KEY = os.getenv("COSMOS_DB_KEY", "")
-    COSMOS_DB_DATABASE = os.getenv("COSMOS_DB_DATABASE", "ama-retail")
+    COSMOS_DB_ENDPOINT = os.getenv("AZURE_COSMOS_ENDPOINT", os.getenv("COSMOS_DB_ENDPOINT", ""))
+    COSMOS_DB_KEY = os.getenv("AZURE_COSMOS_KEY", os.getenv("COSMOS_DB_KEY", ""))
+    COSMOS_DB_DATABASE = os.getenv("AZURE_COSMOS_DB", os.getenv("COSMOS_DB_DATABASE", "ama-retail"))
 
     # App
     MOCK = os.getenv("MOCK", "false").lower() == "true"

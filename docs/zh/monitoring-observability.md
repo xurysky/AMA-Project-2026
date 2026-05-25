@@ -133,4 +133,4 @@ Every agent action creates a span in the distributed trace:
 
 - Azure Monitor Documentation: https://learn.microsoft.com/azure/azure-monitor/
 - OpenTelemetry for Azure: https://learn.microsoft.com/azure/azure-monitor/app/opentelemetry-overview
-- Agent Observability Best Practices: Based on BRK177 (Foundry AI Gateway) course material
+- Agent Observability Best Practices: Based on Foundry Gateway (Foundry AI Gateway) design reference

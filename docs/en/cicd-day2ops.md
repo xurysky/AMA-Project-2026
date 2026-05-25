@@ -197,4 +197,4 @@ Automated checks after every deployment:
 
 - GitHub Actions Documentation: https://docs.github.com/en/actions
 - Azure Container Apps Deployment: https://learn.microsoft.com/azure/container-apps/
-- Canary Deployment Pattern: Based on BRK177 (Foundry AI Gateway) course material
+- Canary Deployment Pattern: Based on Foundry Gateway (Foundry AI Gateway) design reference

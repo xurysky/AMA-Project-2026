@@ -180,7 +180,7 @@ class TestPromptRegression:
         assert len(result.reasoning) > 20  # Non-trivial explanation
 ```
 
-### Synthetic Persona Testing (TT205)
+### Synthetic Persona Testing (Synthetic Persona)
 Using synthetic personas to test agent behavior across diverse customer segments:
 - 50 synthetic personas covering different demographics, preferences, budgets
 - Automated test suite runs nightly with synthetic personas
@@ -241,4 +241,4 @@ class TestPerformance:
 
 - Testing Strategies for Microservices: https://learn.microsoft.com/azure/architecture/microservices/testing
 - Contract Testing with Pact: https://docs.pact.io/
-- AI Model Testing Best Practices: Based on LAB184 (Responsible AI) course material
+- AI Model Testing Best Practices: Based on Responsible AI (Responsible AI) design reference

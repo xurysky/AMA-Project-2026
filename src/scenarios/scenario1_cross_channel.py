@@ -48,7 +48,7 @@ async def run_scenario():
 
     # 模拟客户数据
     customer_data = {
-        "customer_id": "UNIQLO_2026_001",
+        "customer_id": "CONTOSO_2026_001",
         "channels": {
             "app": {
                 "recent_views": ["保暖内衣", "摇粒绒外套", "牛仔裤"],

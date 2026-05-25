@@ -1,11 +1,11 @@
-# UNIQLO (Fast Retailing) Case Study — AMA Project 46
+# Contoso Fashion (Contoso Retail) Case Study — AMA Project 46
 
 ## 1. Company Overview
 
 | Metric | Data |
 |--------|------|
-| Parent Company | Fast Retailing, listed on TSE/HKEX |
-| Brands | UNIQLO, GU, Theory, Helmut Lang, etc. |
+| Parent Company | Contoso Retail, listed on TSE/HKEX |
+| Brands | Contoso Fashion, GU, Theory, Helmut Lang, etc. |
 | Global Stores | ~3,500 across 26 countries and regions |
 | Annual Production | 1.3 billion garments |
 | FY2025 Revenue | ¥3.8 trillion (~$25.3 billion), YoY +11.7% |
@@ -15,7 +15,7 @@
 | China Store Count | 900+ (exceeding Japan domestic) |
 | Japan Sales | ¥1.03 trillion (first Japanese apparel company to exceed ¥1 trillion) |
 
-## 2. Why UNIQLO as AMA Prototype
+## 2. Why Contoso Fashion as AMA Prototype
 
 ### 1. Sufficient Scale, Complex Scenarios
 - 3,500+ global stores, 1.3 billion garments produced annually
@@ -77,34 +77,34 @@
 - Virtual try-on can reduce return rates by 25%+
 - AI quality inspection accuracy 95%+
 
-## 5. Agent Architecture and UNIQLO Business Mapping
+## 5. Agent Architecture and Contoso Fashion Business Mapping
 
 ### Agent 1: Customer Understanding Agent
-**UNIQLO Scenarios:**
+**Contoso Fashion Scenarios:**
 - Unify 200M+ followers' online (App/Mini Program/JD.com/Tmall) and offline (900+ store RFID) behavior
-- Synthetic Persona simulating different customer segments (TT205)
-- Agent Memory storing cross-channel interaction history (WRK761)
+- Synthetic Persona simulating different customer segments (Synthetic Persona)
+- Agent Memory storing cross-channel interaction history (Agent Memory)
 
 ### Agent 2: Personalization Agent
-**UNIQLO Scenarios:**
+**Contoso Fashion Scenarios:**
 - Upgrade "Mix & Match" section to AI-driven
 - Personalized product recommendations based on customer profiles
 - Cross-channel consistency: App recommendation → in-store experience → Mini Program repurchase
 
 ### Agent 3: Inventory Agent
-**UNIQLO Scenarios:**
+**Contoso Fashion Scenarios:**
 - Take over the "Management Dashboard" with 30M+ data points
 - Autonomous demand forecasting per store, automatic replenishment triggers
 - Integration with Ariake Project warehouse automation system
 
 ### Agent 4: Pricing Agent
-**UNIQLO Scenarios:**
+**Contoso Fashion Scenarios:**
 - Dynamic pricing based on demand/competition/inventory
 - China market: JD.com/Tmall competitive price response
 - Southeast Asia market: Pricing strategy under fragmented payment ecosystem
 
 ### Agent 5: Marketing Agent
-**UNIQLO Scenarios:**
+**Contoso Fashion Scenarios:**
 - Autonomous WeChat/Mini Program marketing campaigns
 - Precision targeting of 200M+ follower base
 - Store express delivery (SF Express same-city) marketing coordination
@@ -115,7 +115,7 @@
 - Japan APPI: Data localization + user consent
 - China PIPL: Data export assessment + security audit
 - Singapore PDPA: Cross-border transfer restrictions
-- **Solution**: Synthetic Persona (TT205) for cold start + data localization storage
+- **Solution**: Synthetic Persona (Synthetic Persona) for cold start + data localization storage
 
 ### Multilingual
 - Chinese, Japanese, Korean + Southeast Asian languages
@@ -129,7 +129,7 @@
 
 ### Urban-Rural Divide
 - Tier 1 cities: Mature omni-channel
-- Tier 3-4 cities: Store expansion underway (UNIQLO averages 7 new stores/month)
+- Tier 3-4 cities: Store expansion underway (Contoso Fashion averages 7 new stores/month)
 - **Solution**: Agents adjust strategies based on store location
 
 ## 7. Projected Impact Data Support
@@ -144,7 +144,7 @@
 
 ## 8. Competitor Comparison
 
-| Dimension | UNIQLO | ZARA | H&M | SHEIN |
+| Dimension | Contoso Fashion | ZARA | H&M | SHEIN |
 |-----------|--------|------|-----|-------|
 | Digital maturity | ⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐⭐⭐ |
 | RFID coverage | Full | Partial | Partial | None |
@@ -153,4 +153,4 @@
 | Asia market depth | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐⭐ |
 | Omni-channel integration | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐ |
 
-**Conclusion**: UNIQLO has the best data foundation and omni-channel integration, but its AI applications remain at the "auxiliary tool" stage and have not yet achieved Agent-ified autonomous decision-making. This is exactly our opportunity window.
+**Conclusion**: Contoso Fashion has the best data foundation and omni-channel integration, but its AI applications remain at the "auxiliary tool" stage and have not yet achieved Agent-ified autonomous decision-making. This is exactly our opportunity window.

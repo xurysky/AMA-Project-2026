@@ -1,21 +1,21 @@
-# 技术架构 — 课程知识融合
+# 技术架构 — 技术模式知识融合
 
-## 课程技术点映射
+## 技术模式映射
 
-| 课程 | 核心技术 | 融入位置 |
+| 技术模式 | 核心技术 | 融入位置 |
 |------|---------|---------|
-| **TT205** 合成 Persona | TinyTroupe 虚拟客户 | Customer Understanding Agent 冷启动 |
-| **TT203** 三层混合架构 | Data(ML) → LLM → App | 所有 Agent 的决策架构 |
-| **TT203** 计量经济学 | 线性回归/价格弹性 | Pricing Agent 定价模型 |
-| **WRK761** Agent Memory | Episodic + Long-term | 所有 Agent 的记忆机制 |
-| **BRK180** GenAI 个性化 | Understand-Act-Learn | Personalization Agent |
-| **BRK177** Foundry AI Gateway | 生产级架构 | 基础设施层 |
-| **LAB181** 多 Agent | Agent 协作 | 编排层 |
-| **LAB184** 负责任 AI | 安全合规 | 全局 |
+| **Synthetic Persona** 合成 Persona | TinyTroupe 虚拟客户 | Customer Understanding Agent 冷启动 |
+| **Hybrid AI** 三层混合架构 | Data(ML) → LLM → App | 所有 Agent 的决策架构 |
+| **Hybrid AI** 计量经济学 | 线性回归/价格弹性 | Pricing Agent 定价模型 |
+| **Agent Memory** Agent Memory | Episodic + Long-term | 所有 Agent 的记忆机制 |
+| **U-A-L** GenAI 个性化 | Understand-Act-Learn | Personalization Agent |
+| **Foundry Gateway** Foundry AI Gateway | 生产级架构 | 基础设施层 |
+| **Multi-Agent** 多 Agent | Agent 协作 | 编排层 |
+| **Responsible AI** 负责任 AI | 安全合规 | 全局 |
 
 ---
 
-## 1. 合成 Persona（TT205）— 冷启动解决方案
+## 1. 合成 Persona（Synthetic Persona）— 冷启动解决方案
 
 ### 问题
 新客户没有历史数据，Agent 无法个性化。
@@ -31,7 +31,7 @@ from tinytroupe.environment import TinyWorld
 
 class SyntheticPersonaGenerator:
     """
-    基于 TT205 课程：合成 Persona 生成器
+    基于 Synthetic Persona 技术模式：合成 Persona 生成器
     用 TinyTroupe 创建虚拟客户，解决冷启动问题
     """
     
@@ -135,7 +135,7 @@ class SyntheticPersonaGenerator:
 
 ---
 
-## 2. 计量经济学模型（TT203）— 价格弹性
+## 2. 计量经济学模型（Hybrid AI）— 价格弹性
 
 ### 问题
 如何科学定价，最大化利润？
@@ -152,7 +152,7 @@ from typing import Dict, List, Tuple
 
 class PriceElasticityModel:
     """
-    基于 TT203 课程：计量经济学线性回归
+    基于 Hybrid AI 方法：计量经济学线性回归
     估算价格弹性系数，用于动态定价
     """
     
@@ -243,7 +243,7 @@ class PriceElasticityModel:
 
 ---
 
-## 3. TT203 三层混合架构
+## 3. 三层混合架构
 
 ### 架构
 ```
@@ -265,7 +265,7 @@ class PriceElasticityModel:
 
 class HybridAgent(BaseAgent):
     """
-    基于 TT203 课程：三层混合架构
+    基于 Hybrid AI 方法：三层混合架构
     Data Layer → ML Layer → LLM Layer
     """
     
@@ -295,7 +295,7 @@ class HybridAgent(BaseAgent):
 
 ---
 
-## 4. Agent Memory（WRK761）
+## 4. Agent Memory（Agent Memory）
 
 ### 记忆架构
 ```
@@ -324,7 +324,7 @@ import json
 
 class AgentMemory:
     """
-    基于 WRK761 课程：Agent Memory 架构
+    基于 Agent Memory 技术模式：Agent Memory 架构
     Episodic + Long-term + Semantic 三层记忆
     """
     
@@ -394,15 +394,15 @@ class AgentMemory:
 
 ---
 
-## 课程融合总结
+## 技术模式融合总结
 
-| 课程 | 技术 | 融入的 Agent | 价值 |
+| 技术模式 | 技术 | 融入的 Agent | 价值 |
 |------|------|-------------|------|
-| TT205 | 合成 Persona | Customer Understanding | 冷启动 + 隐私保护 |
-| TT203 | 三层混合架构 | 所有 Agent | ML 精确性 + LLM 推理 |
-| TT203 | 线性回归/弹性 | Pricing | 科学定价 |
-| WRK761 | Agent Memory | 所有 Agent | 持续学习 |
-| BRK180 | U-A-L 三支柱 | Personalization | 个性化闭环 |
-| BRK177 | Foundry Gateway | 基础设施 | 生产级架构 |
-| LAB181 | 多 Agent 协作 | 编排层 | 端到端自动化 |
-| LAB184 | 负责任 AI | 全局 | 合规 + 安全 |
+| Synthetic Persona | 合成 Persona | Customer Understanding | 冷启动 + 隐私保护 |
+| Hybrid AI | 三层混合架构 | 所有 Agent | ML 精确性 + LLM 推理 |
+| Hybrid AI | 线性回归/弹性 | Pricing | 科学定价 |
+| Agent Memory | Agent Memory | 所有 Agent | 持续学习 |
+| U-A-L | U-A-L 三支柱 | Personalization | 个性化闭环 |
+| Foundry Gateway | Foundry Gateway | 基础设施 | 生产级架构 |
+| Multi-Agent | 多 Agent 协作 | 编排层 | 端到端自动化 |
+| Responsible AI | 负责任 AI | 全局 | 合规 + 安全 |

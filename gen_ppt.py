@@ -141,7 +141,7 @@ add_textbox(slide, Inches(1), Inches(1.8), Inches(11.3), Inches(1.2),
 
 # Subtitle
 add_textbox(slide, Inches(1), Inches(3.3), Inches(11.3), Inches(0.8),
-            "基于优衣库的多 Agent 智能零售平台",
+            "基于Contoso 服装店的多 Agent 智能零售平台",
             font_size=24, color=GOLD, bold=False, alignment=PP_ALIGN.CENTER)
 
 # Divider
@@ -193,7 +193,7 @@ add_page_number(slide, 2)
 # ══════════════════════════════════════════════════════════════
 content_slide("项目背景", [
     "全球零售业面临数字化转型挑战，传统模式难以为继",
-    "优衣库（迅销集团）：全球 3,500+ 门店，年产量 13 亿件",
+    "Contoso 服装店：全球 3,500+ 门店，年产量 13 亿件",
     "核心痛点：数据孤岛 → 各渠道数据无法打通",
     "核心痛点：个性化不足 → 千篇一律的客户体验",
     "核心痛点：库存浪费 → 行业平均库存浪费率超 30%",
@@ -757,7 +757,7 @@ add_bullet_textbox(slide, Inches(1.0), Inches(1.8), Inches(11.3), Inches(3.5),
 box = add_rounded_rect(slide, Inches(1.0), Inches(5.2), Inches(11.3), Inches(1.5), DEEP_BLUE)
 add_textbox(slide, Inches(1.3), Inches(5.4), Inches(10.7), Inches(1.1),
             "Project 46 不仅是一个技术方案，更是零售业数字化转型的范式革新。\n"
-            "通过 AI Agent 协同，让优衣库从「经验驱动」迈向「数据智能驱动」。",
+            "通过 AI Agent 协同，让Contoso 服装店从「经验驱动」迈向「数据智能驱动」。",
             font_size=18, color=WHITE, alignment=PP_ALIGN.CENTER)
 add_page_number(slide, 24)
 

@@ -17,7 +17,7 @@
 ### 核心能力
 1. **统一身份解析**：跨渠道 ID-Mapping（手机号、微信 OpenID、会员号、设备 ID）
 2. **行为序列建模**：时序 Transformer 编码用户行为路径
-3. **合成 Persona**：基于 TT205 生成虚拟客户，解决冷启动和隐私问题
+3. **合成 Persona**：基于 Synthetic Persona 生成虚拟客户，解决冷启动和隐私问题
 4. **Agent Memory**：Episodic（短期交互）+ Long-term（长期偏好）记忆架构
 
 ### 输出
@@ -58,8 +58,8 @@ Event Hubs              # 实时数据流
 | 历史转化 | Cosmos DB | 推荐优化 |
 
 ### 核心能力
-1. **U-A-L 三支柱**（BRK180）：Understand → Act → Learn
-2. **Hybrid AI**（TT203）：LLM 推理 + ML 精确性
+1. **U-A-L 三支柱**（U-A-L）：Understand → Act → Learn
+2. **Hybrid AI**：LLM 推理 + ML 精确性
 3. **跨渠道一致性**：App → 门店 → 小程序 推荐统一
 4. **实时个性化**：页面加载 <200ms 响应
 
@@ -143,7 +143,7 @@ Cosmos DB               # 预测结果存储
 | 成本数据 | ERP 系统 | 利润底线 |
 
 ### 核心能力
-1. **三层架构**（TT203）：Data → ML → LLM
+1. **三层架构**（Hybrid AI）：Data → ML → LLM
 2. **价格弹性建模**：贝叶斯回归估算弹性系数
 3. **竞争响应**：实时监控竞品价格变化
 4. **Human-in-the-Loop**：关键决策需人工确认

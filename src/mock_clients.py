@@ -23,7 +23,7 @@ class MockChatCompletions:
 
         if "画像" in user_msg or "profile" in user_msg.lower():
             result = {
-                "customer_id": "UNIQLO_2026_001",
+                "customer_id": "CONTOSO_2026_001",
                 "rfm_segment": "high_value_active",
                 "intent": "winter_shopping",
                 "preferences": {
