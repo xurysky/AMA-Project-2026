@@ -159,7 +159,7 @@ See also:
 ### Quick Start
 
 ```bash
-git clone https://github.com/xurysky/AMA-Project-2026.git
+git clone https://github.com/dowa_microsoft/AMA-Project-2026.git
 cd AMA-Project-2026
 pip install -r requirements.txt
 cp .env.example .env
@@ -276,7 +276,7 @@ Azure Static Web Apps / 浏览器
 ### 快速开始
 
 ```bash
-git clone https://github.com/xurysky/AMA-Project-2026.git
+git clone https://github.com/dowa_microsoft/AMA-Project-2026.git
 cd AMA-Project-2026
 pip install -r requirements.txt
 cp .env.example .env
