@@ -133,7 +133,6 @@ The current prototype implements a unified Retail State (`data/fixtures/cold_sna
 See also:
 
 - [First-principles redesign](docs/en/first-principles-redesign.md)
-- [第一性原理重构](docs/zh/first-principles-redesign.md)
 
 > Note: sales +40%, inventory waste -50%, satisfaction 85%, and CLV +60% are target business hypotheses from the AMA brief, not validated production results from this prototype.
 
@@ -172,10 +171,10 @@ python -m src.scenarios.scenario1_cross_channel
 
 | Metric | Source | Logic |
 |--------|--------|-------|
-| Sales +40% | McKinsey: AI personalization boosts 20-35% conversion | 5 Agent协同 |
-| Inventory -50% | Gartner: AI forecasting reduces 20-50% waste | Inventory Agent |
-| Satisfaction 85% | Forrester: AI service提升25% satisfaction | Omnichannel Agent |
-| CLV +60% | Harvard: personalization提升40% CLV | Relationship management |
+| Sales +40% | McKinsey: AI personalization boosts 20-35% conversion | 5-agent collaboration |
+| Inventory -50% | Gartner: AI forecasting reduces 20-50% waste | Inventory agent |
+| Satisfaction 85% | Forrester: AI service improves satisfaction by 25% | Omnichannel agent |
+| CLV +60% | Harvard: personalization improves CLV by 40% | Relationship management |
 
 ### Team
 
