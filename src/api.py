@@ -1141,6 +1141,19 @@ async def workflow_page():
     )
 
 
+@app.get("/focused", response_class=HTMLResponse)
+async def focused_page():
+    focused = STATIC_DIR / "focused.html"
+    return HTMLResponse(
+        content=focused.read_text(encoding="utf-8"),
+        headers={
+            "Cache-Control": "no-store, no-cache, must-revalidate, max-age=0",
+            "Pragma": "no-cache",
+            "Expires": "0",
+        },
+    )
+
+
 @app.get("/api")
 async def root():
     return {
@@ -1151,6 +1164,7 @@ async def root():
         "agents": ["Inventory Agent", "Pricing Agent", "Customer Understanding Agent", "Personalization Agent", "Marketing Agent"],
         "core_scenario": "Seasonal Retail Decision Cycle",
         "ui": "/",
+        "focused_panel_ui": "/focused",
         "scenario_api": "/api/v1/season/{spring|summer|autumn|winter}",
         "operations_api": "/api/v1/runs/{run_id}/work-orders/{order_id}/{approve|complete}",
         "seasons": RetailScenarioEngine().list_seasons(),
