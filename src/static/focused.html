@@ -1,0 +1,653 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Focused Panel Demo · Seasonal Retail Decision Cockpit</title>
+  <style>
+    :root{
+      --bg:#f5f7fb;--ink:#172033;--muted:#647086;--line:#dfe5ef;--panel:#fff;--soft:#f8fafc;
+      --red:#c2413a;--amber:#b7791f;--green:#16794b;--blue:#2c67b1;--violet:#6750a4;
+      --shadow:0 14px 34px rgba(24,35,61,.08);--radius:8px;--mono:ui-monospace,SFMono-Regular,Consolas,monospace;
+    }
+    *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.45 Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+    button,input,select{font:inherit}button{border:0;border-radius:8px;background:var(--ink);color:#fff;font-weight:800;padding:9px 12px;cursor:pointer}
+    button.secondary{background:#fff;color:var(--ink);border:1px solid var(--line)}button.good{background:var(--green)}button.warn{background:var(--amber)}button:disabled{opacity:.48;cursor:not-allowed}
+    .shell{display:grid;grid-template-columns:276px 1fr;min-height:100vh}.side{background:#101827;color:#eef5ff;padding:18px 14px;position:sticky;top:0;height:100vh}
+    .brand{padding:8px 8px 18px;border-bottom:1px solid rgba(255,255,255,.12);margin-bottom:14px}.brand strong{display:block;font-size:16px}.brand span{display:block;color:#9fb0c8;font-size:12px;margin-top:4px}
+    .nav-title{font-size:10px;letter-spacing:1.3px;text-transform:uppercase;color:#8090a8;margin:16px 10px 6px;font-weight:900}
+    .nav{display:flex;align-items:center;gap:10px;color:#c9d5e8;padding:11px 10px;border-radius:8px;cursor:pointer}.nav:hover{background:rgba(255,255,255,.07)}.nav.active{background:rgba(255,255,255,.13);color:#fff}
+    .main{padding:20px 24px 36px}.top{display:flex;justify-content:space-between;gap:18px;align-items:flex-start;margin-bottom:16px}.kicker{font-size:12px;text-transform:uppercase;letter-spacing:1px;color:var(--blue);font-weight:900}
+    h1{font-size:25px;line-height:1.15;margin:4px 0 6px}h2{font-size:16px;margin:0}h3{font-size:14px;margin:0 0 6px}.muted{color:var(--muted)}.small{font-size:12px}.mono{font-family:var(--mono)}
+    .actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.pill{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:#fff;border-radius:999px;padding:5px 9px;font-size:12px;font-weight:800}
+    .pill.red{color:var(--red);background:#fff5f4}.pill.amber{color:var(--amber);background:#fff8e8}.pill.green{color:var(--green);background:#effaf4}.pill.blue{color:var(--blue);background:#eef6ff}.pill.violet{color:var(--violet);background:#f4f0ff}
+    .grid{display:grid;gap:14px}.cols-2{grid-template-columns:1fr 1fr}.cols-3{grid-template-columns:repeat(3,1fr)}.cols-4{grid-template-columns:repeat(4,1fr)}.cols-main{grid-template-columns:minmax(0,1.28fr) 390px}.cols-action{grid-template-columns:1fr 1fr 1fr}
+    .panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}.panel-h{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:13px 14px;border-bottom:1px solid var(--line);background:#fff}.panel-b{padding:14px}
+    .hero{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:14px;margin-bottom:14px}.hero-card{background:linear-gradient(135deg,#172033,#263852);color:#fff;border-radius:8px;padding:18px;box-shadow:var(--shadow)}.hero-card h2{font-size:22px;margin:6px 0}.hero-card p{color:#cbd5e1;margin:0}.hero-side{display:grid;gap:10px}.decision-progress{height:8px;background:#e7edf6;border-radius:999px;overflow:hidden}.decision-progress span{display:block;height:100%;background:linear-gradient(90deg,var(--blue),var(--green));width:0;transition:width .2s ease}
+    .metric strong{display:block;font-size:24px;line-height:1.1;margin:4px 0}.alert{border-left:4px solid var(--blue)}.alert.red{border-left-color:var(--red)}.alert.amber{border-left-color:var(--amber)}
+    .task-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.task-card{border:1px solid var(--line);border-radius:8px;padding:12px;background:#fff;min-height:154px;display:grid;gap:8px}.task-card.red{background:#fff7f6;border-color:#f0c9c5}.task-card.amber{background:#fff9ed;border-color:#ead7aa}.task-card.green{background:#f2fbf6;border-color:#bde8d0}.task-icon{width:34px;height:34px;border-radius:8px;display:grid;place-items:center;background:#fff;border:1px solid var(--line);font-weight:900}.task-card h3{font-size:15px}.task-card p{margin:0}.task-card .big{font-size:22px;font-weight:950}
+    .product-card{display:grid;grid-template-columns:60px 1fr auto;gap:12px;align-items:center;border:1px solid var(--line);border-radius:8px;padding:12px;background:#fff}.sku-art{width:60px;height:60px;border-radius:8px;display:grid;place-items:center;font-weight:950;color:#fff;background:linear-gradient(135deg,#2c67b1,#6e9fd8)}.sku-art.warm{background:linear-gradient(135deg,#8f3d2f,#d78b55)}.meter{height:7px;background:#edf1f7;border-radius:999px;overflow:hidden;margin-top:8px}.meter span{display:block;height:100%;background:var(--green)}.meter.red span{background:var(--red)}.meter.amber span{background:var(--amber)}
+    .row{border:1px solid var(--line);border-radius:8px;background:#fff;padding:10px;margin-bottom:8px}.row:last-child{margin-bottom:0}.row-head{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+    .role{display:grid;grid-template-columns:42px 1fr auto;gap:10px;align-items:center;border:1px solid var(--line);border-radius:8px;padding:10px;background:#fff;margin-bottom:8px}.role b{display:block}.role small{color:var(--muted)}.avatar{width:36px;height:36px;border-radius:8px;display:grid;place-items:center;background:#eef6ff;color:var(--blue);font-weight:950}
+    .decision-card{border:1px solid var(--line);border-radius:8px;background:#fff;padding:12px}.decision-card h3{display:flex;justify-content:space-between;gap:10px;align-items:center}.slider-line{display:grid;grid-template-columns:1fr 58px;gap:10px;align-items:center;margin:10px 0}.slider-line label{grid-column:1/-1;font-weight:800}.slider-line input{width:100%}.select-line{display:grid;grid-template-columns:1fr 96px;gap:10px;align-items:center;margin:10px 0}.select-line label{font-weight:800}.select-line select,.select-line input{border:1px solid var(--line);border-radius:8px;padding:8px;background:#fff}
+    .impact{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}.impact div{background:var(--soft);border:1px solid var(--line);border-radius:8px;padding:10px}.impact strong{display:block;font-size:18px}
+    .guard{display:grid;gap:8px}.guard .item{display:grid;grid-template-columns:16px 1fr auto;gap:9px;align-items:start;border:1px solid var(--line);border-radius:8px;padding:9px;background:#fff}.dot{width:10px;height:10px;border-radius:50%;margin-top:5px;background:var(--green)}.dot.amber{background:var(--amber)}.dot.red{background:var(--red)}
+    .flow{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}.flow .step{border:1px solid var(--line);border-radius:8px;padding:10px;background:#fff;min-height:106px}.step b{display:block;margin-bottom:5px}.step .num{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;background:#edf4ff;color:var(--blue);font-weight:900;margin-bottom:8px}
+    .table{width:100%;border-collapse:collapse}.table th,.table td{padding:9px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}.table th{font-size:12px;color:var(--muted);background:var(--soft)}
+    .service{display:grid;grid-template-columns:170px 1fr 90px;gap:10px;border:1px solid var(--line);border-radius:8px;padding:10px;background:#fff;margin-bottom:8px}.source-card{border:1px solid var(--line);border-radius:8px;padding:10px;background:#fff}
+    .sku-toolbar{display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:12px}.seg{display:inline-flex;border:1px solid var(--line);border-radius:8px;background:#fff;overflow:hidden}.seg button{border-radius:0;background:#fff;color:var(--ink);border-right:1px solid var(--line)}.seg button:last-child{border-right:0}.seg button.active{background:var(--ink);color:#fff}.sku-table{width:100%;border-collapse:separate;border-spacing:0 8px}.sku-table th{font-size:12px;color:var(--muted);text-align:left;padding:0 10px}.sku-table td{background:#fff;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:12px 10px;vertical-align:middle}.sku-table td:first-child{border-left:1px solid var(--line);border-radius:8px 0 0 8px}.sku-table td:last-child{border-right:1px solid var(--line);border-radius:0 8px 8px 0}.sku-name{display:grid;grid-template-columns:42px 1fr;gap:10px;align-items:center}.mini-art{width:42px;height:42px;border-radius:8px;display:grid;place-items:center;color:#fff;font-weight:950;background:linear-gradient(135deg,#2c67b1,#6e9fd8)}.mini-art.clearance{background:linear-gradient(135deg,#8f3d2f,#d78b55)}.mini-art.watch{background:linear-gradient(135deg,#56677d,#9aa9bc)}.bar{height:8px;background:#e9eef5;border-radius:999px;overflow:hidden;min-width:92px}.bar span{display:block;height:100%;background:var(--green)}.bar.red span{background:var(--red)}.bar.amber span{background:var(--amber)}.action-card{border:1px solid var(--line);border-radius:8px;padding:12px;background:#fff}.action-card strong{display:block;font-size:20px}.action-card.red{background:#fff7f6}.action-card.amber{background:#fff9ed}.action-card.green{background:#f2fbf6}
+    .empty{padding:28px;border:1px dashed var(--line);border-radius:8px;color:var(--muted);background:#fff}.footer-links{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.hidden{display:none!important}
+    .sticky{position:sticky;top:14px}.next-box{background:#f7fbff;border:1px solid #cfe2f7;border-radius:8px;padding:12px}.next-box b{display:block;margin-bottom:4px}.choice-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}.choice{border:1px solid var(--line);background:#fff;color:var(--ink);padding:7px 9px}.choice.active{background:var(--ink);color:#fff}.timeline{display:grid;gap:8px}.timeline-step{display:grid;grid-template-columns:28px 1fr;gap:8px}.timeline-step span:first-child{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;background:#edf4ff;color:var(--blue);font-weight:900;font-size:12px}.timeline-step.done span:first-child{background:#e9f8ef;color:var(--green)}
+    @media(max-width:1100px){.shell{grid-template-columns:1fr}.side{position:relative;height:auto}.cols-2,.cols-3,.cols-4,.cols-main,.cols-action,.flow,.hero,.task-grid{grid-template-columns:1fr}.top{flex-direction:column}.role,.service,.product-card{grid-template-columns:1fr}.slider-line,.select-line{grid-template-columns:1fr}.sticky{position:static}}
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <aside class="side">
+      <div class="brand">
+        <strong>Focused Panel Demo</strong>
+        <span>Store Manager-in-the-loop · Governance Guardrails</span>
+      </div>
+      <div class="nav-title">Portal</div>
+      <div class="nav active" data-view="app" onclick="setView('app')">Business Application</div>
+      <div class="nav" data-view="sku" onclick="setView('sku')">SKU Portfolio</div>
+      <div class="nav" data-view="data" onclick="setView('data')">Data & Signals</div>
+      <div class="nav" data-view="ai" onclick="setView('ai')">AI Services</div>
+      <div class="nav" data-view="governance" onclick="setView('governance')">Governance</div>
+      <div class="nav-title">Deep Dive</div>
+      <div class="nav" onclick="location.href='/workflow?lang=en'">Open Full Platform</div>
+      <div class="nav" onclick="location.href='/api'">API Contract</div>
+    </aside>
+    <main class="main">
+      <div class="top">
+        <div>
+          <div class="kicker">Seasonal Trading Decision Cockpit</div>
+          <h1>Shanghai store demand-inventory mismatch war room</h1>
+          <div class="muted">Agents prepare the decision packet. Business owners approve replenishment, transfer, markdown and customer recovery actions before execution.</div>
+        </div>
+        <div class="actions">
+          <button class="secondary" id="langToggle" onclick="toggleLang()">中文</button>
+          <select id="season" class="secondary" onchange="startRun()">
+            <option value="summer">Summer heatwave</option>
+            <option value="winter">Winter cold snap</option>
+            <option value="spring">Spring transition</option>
+            <option value="autumn">Autumn transition</option>
+          </select>
+          <button class="secondary" onclick="startRun()">New Run</button>
+          <button class="good" onclick="submitDecision()">Submit Decision</button>
+        </div>
+      </div>
+      <div id="status" class="empty">Loading scenario from the existing AMA runtime...</div>
+      <div id="content" class="hidden"></div>
+    </main>
+  </div>
+
+<script>
+let run=null, view='app';
+let lang=(new URLSearchParams(location.search).get('lang')||localStorage.getItem('ama_focused_lang')||'en').toLowerCase().startsWith('zh')?'zh':'en';
+const decision={replenishPct:100,discount:15,coupon:20,audience:847,channels:['App Push','Email'],regionalTransfer:true};
+const roleStates={store:false,regional:false,supply:false,category:false,crm:false,compliance:false};
+const ZH={
+  'Focused Panel Demo':'聚焦评审演示',
+  'Store Manager-in-the-loop · Governance Guardrails':'店长参与决策 · 合规护栏',
+  'Portal':'门户',
+  'Business Application':'业务应用',
+  'SKU Portfolio':'SKU 组合视图',
+  'Data & Signals':'数据与信号',
+  'AI Services':'AI 服务',
+  'Governance':'治理合规',
+  'Deep Dive':'深入查看',
+  'Open Full Platform':'打开完整平台',
+  'API Contract':'API 契约',
+  'Seasonal Trading Decision Cockpit':'季节性商品经营决策驾驶舱',
+  'Shanghai store demand-inventory mismatch war room':'上海门店供需错配协同决策台',
+  'Agents prepare the decision packet. Business owners approve replenishment, transfer, markdown and customer recovery actions before execution.':'Agent 生成经营决策包；补货、调拨、折扣和客户召回等高影响动作必须由业务负责人审批后执行。',
+  'Summer heatwave':'夏季高温',
+  'Winter cold snap':'冬季寒潮',
+  'Spring transition':'春季换季',
+  'Autumn transition':'秋季换季',
+  'New Run':'新建运行',
+  'Submit Decision':'提交决策',
+  'Loading scenario from the existing AMA runtime...':'正在从现有 AMA 运行时加载场景...',
+  'Creating stateful run from /api/v1/runs/{season}...':'正在通过 /api/v1/runs/{season} 创建有状态运行...',
+  'Runtime not available.':'运行时不可用。',
+  'Start FastAPI and open':'请启动 FastAPI 并打开',
+  '3 decisions required before execution':'执行前需要完成 3 项决策',
+  'Live run':'实时运行',
+  'Stock risk':'库存风险',
+  'Opportunity':'销售机会',
+  'Approvals':'审批',
+  'Decision readiness':'决策就绪度',
+  'Work orders':'工单',
+  'Governance status':'治理状态',
+  'pending':'待审批',
+  'ready':'可执行',
+  'completed':'已完成',
+  "Today's Action Board":'今日行动看板',
+  'Store SH-001 · Shanghai':'上海 SH-001 门店',
+  'Prevent stockout':'防止缺货',
+  'Release overstock':'释放积压库存',
+  'Recover customers':'召回潜在流失客户',
+  'High-intent and churn-risk members with valid consent.':'已授权的高意向与流失风险会员。',
+  'Product Situation':'商品现状',
+  'All Category SKU Portfolio':'全品类 SKU 组合视图',
+  'Which products sell well, which need clearance, and what discount is allowed by margin guardrails.':'查看哪些商品卖得好、哪些需要清仓，以及毛利护栏允许的折扣幅度。',
+  'All SKUs':'全部 SKU',
+  'Hot sellers':'热销商品',
+  'Clearance':'清仓商品',
+  'Watch list':'观察清单',
+  'SKU / Product':'SKU / 商品',
+  'Category':'品类',
+  'Lifecycle':'生命周期',
+  'Inventory Health':'库存健康度',
+  'Sales Signal':'销售信号',
+  'Recommended Action':'推荐动作',
+  'Discount':'折扣',
+  'Approval Owner':'审批负责人',
+  'Replenish / transfer':'补货 / 调拨',
+  'Price protect':'价格保护',
+  'Markdown clearance':'降价清仓',
+  'Monitor':'观察',
+  'No discount':'不打折',
+  'In-season hero SKU. Avoid broad discounts; protect price and replenish.':'当季主推商品。避免大范围打折，优先保价和补货。',
+  'Off-season or slow-moving SKU. Markdown is allowed within margin guardrails.':'反季或慢动销商品。可在毛利护栏内进行折扣清仓。',
+  'Stable SKU. Keep monitoring demand and inventory coverage.':'稳定商品。继续观察需求和库存覆盖。',
+  'Portfolio Summary':'组合摘要',
+  'Replenishment candidates':'补货候选',
+  'Clearance candidates':'清仓候选',
+  'Discount approvals':'折扣审批',
+  'Margin guardrail':'毛利护栏',
+  'current threshold':'当前阈值',
+  'markdown pool':'清仓池',
+  'stockout risk':'缺货风险',
+  'human required':'需要人工',
+  'Category / Pricing Manager':'品类 / 定价经理',
+  'Supply Chain Planner':'供应链计划',
+  'Store Manager':'店长',
+  'Finance + Category':'财务 + 品类',
+  'SKU-level evidence':'SKU 级证据',
+  'Hot seller':'热销商品',
+  'Slow mover':'滞销商品',
+  'coverage':'覆盖率',
+  'Decision Controls':'决策控件',
+  'try the trade-offs':'调整取舍',
+  'Replenish':'补货',
+  'Quantity vs. stockout risk':'补货量 vs. 缺货风险',
+  'Higher quantity reduces lost sales but may create later inventory exposure.':'补货越多越能减少销售损失，但也可能带来后续库存暴露。',
+  'Markdown':'降价促销',
+  'Discount vs. margin':'折扣 vs. 毛利',
+  'Above 15% moves from pricing approval to finance/category approval.':'超过 15% 将从定价审批升级为财务与品类审批。',
+  'Recover':'召回',
+  'Coupon value':'优惠券金额',
+  'Audience size':'触达人群',
+  'Sales opportunity protected':'保护的销售机会',
+  'Inventory release estimate':'预计释放库存',
+  'Gross margin impact':'毛利影响',
+  'Customer recovery estimate':'预计召回客户',
+  'Cross-functional Approvals':'跨职能审批',
+  'Approve All':'全部审批',
+  'Clear All':'清除审批',
+  'Store Manager':'店长',
+  'Regional Ops':'区域运营',
+  'Supply Chain Planner':'供应链计划',
+  'Category / Pricing':'品类 / 定价',
+  'CRM Manager':'CRM 经理',
+  'Compliance / Risk':'合规 / 风控',
+  'Confirms local demand, shelf execution and replenishment request.':'确认本店需求、陈列执行和补货申请。',
+  'Approves cross-store transfer and store priority.':'审批跨店调拨和门店优先级。',
+  'Confirms warehouse availability, ETA and transfer feasibility.':'确认仓库可用库存、到货时间和调拨可行性。',
+  'Approves lifecycle status, markdown boundary and gross margin.':'审批商品生命周期、折扣边界和毛利影响。',
+  'Approves customer recovery audience, channel and coupon budget.':'审批客户召回人群、渠道和券预算。',
+  'Validates consent, RBAC approval limits and AI traceability.':'校验客户授权、角色权限和 AI 可追溯性。',
+  'approved':'已审批',
+  'waiting':'待处理',
+  'Approve':'审批',
+  'Undo':'撤销',
+  'Execution Queue':'执行队列',
+  'Approve Pending':'批准待审批',
+  'Complete Ready':'完成可执行',
+  'Order':'工单',
+  'Business owner':'业务负责人',
+  'Status':'状态',
+  'Action':'操作',
+  'Complete':'完成',
+  'Done':'完成',
+  'No work orders.':'暂无工单。',
+  'Next best action':'下一步建议',
+  'Ready to submit':'可以提交',
+  'Review the three decision controls, then capture approvals from Store, Regional Ops, Supply Chain, Category/Pricing, CRM and Compliance.':'先检查三组决策控件，然后完成店长、区域运营、供应链、品类/定价、CRM 和合规审批。',
+  'All role approvals are captured. Submit the decision to convert pending items into executable work orders.':'所有角色审批已完成。提交决策后，待审批事项会转为可执行工单。',
+  'Submit after approvals':'审批后提交',
+  'Review Guardrails':'查看护栏',
+  'Governance Guardrails':'治理护栏',
+  'Margin & markdown':'毛利与折扣',
+  'Customer consent':'客户授权',
+  'Promotion budget':'促销预算',
+  'Human approval':'人工审批',
+  'AI traceability':'AI 可追溯性',
+  'passed':'通过',
+  'pass':'通过',
+  'review':'需复核',
+  'approval':'需审批',
+  'block':'阻断',
+  'required':'必需',
+  'auditable':'可审计',
+  'How The Loop Works':'闭环如何运转',
+  'Alert':'预警',
+  'Decision packet':'决策包',
+  'Human approvals':'人工审批',
+  'Execute work orders':'执行工单',
+  'Learn from outcomes':'结果学习',
+  'Demand, inventory, customer and weather signals trigger a store alert.':'需求、库存、客户和天气信号触发门店预警。',
+  'Agents produce replenishment, markdown and recovery recommendations.':'Agent 生成补货、折扣和客户召回建议。',
+  'Humans approve according to role, budget, margin and consent guardrails.':'业务人员按角色、预算、毛利和授权护栏进行审批。',
+  'Work orders execute after approval and are persisted.':'审批后工单执行并持久化留痕。',
+  'Campaign response and inventory outcomes feed back into memory.':'活动响应和库存结果回写到共享记忆。',
+  'Data Products Feeding the Decision':'支撑决策的数据产品',
+  'Feature Store':'特征库',
+  'Shared Agent Memory':'Agent 共享记忆',
+  'AI Service Calls by Agent':'按 Agent 展示 AI 服务调用',
+  'Azure trace':'Azure 调用链',
+  'Application to AI Mapping':'应用到 AI 能力映射',
+  'Compliance Decision':'合规判断',
+  'No blocking compliance issue':'没有阻断性合规问题',
+  'Consent, data residency, auditability and approval thresholds are checked before execution.':'执行前已检查客户授权、数据驻留、可审计性和审批阈值。',
+  'Evidence':'证据',
+  'Audit Log':'审计日志',
+  'Refresh':'刷新'
+};
+
+function money(n){return '¥'+Number(n||0).toLocaleString('en-US')}
+function tr(s){return lang==='zh'?(ZH[s]||s):s}
+function trText(root=document.body){
+  const skip=new Set(['SCRIPT','STYLE','TEXTAREA','INPUT']);
+  const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,{acceptNode:n=>{
+    const p=n.parentElement;
+    if(!p||skip.has(p.tagName))return NodeFilter.FILTER_REJECT;
+    return n.nodeValue.trim()?NodeFilter.FILTER_ACCEPT:NodeFilter.FILTER_REJECT;
+  }});
+  const nodes=[]; while(walker.nextNode())nodes.push(walker.currentNode);
+  for(const n of nodes){
+    const raw=n.nodeValue, trimmed=raw.trim();
+    if(lang==='zh' && ZH[trimmed]) n.nodeValue=raw.replace(trimmed,ZH[trimmed]);
+  }
+  document.documentElement.lang=lang==='zh'?'zh-CN':'en';
+  const btn=document.getElementById('langToggle'); if(btn)btn.textContent=lang==='zh'?'English':'中文';
+  document.querySelectorAll('#season option').forEach(o=>{const zh=ZH[o.textContent.trim()]; if(lang==='zh'&&zh)o.textContent=zh;});
+}
+function toggleLang(){
+  lang=lang==='zh'?'en':'zh';
+  localStorage.setItem('ama_focused_lang',lang);
+  history.replaceState(null,'',`/focused?lang=${lang}`);
+  render();
+  trText();
+}
+function pct(n){return Math.round(Number(n||0)*100)}
+function byAgent(name){return run?.scenario?.decision_loop?.find(d=>d.agent===name)||{}}
+function invProducts(){return byAgent('Inventory Agent')?.decision?.products||[]}
+function pricingActions(){return byAgent('Pricing Agent')?.decision?.pricing_actions||[]}
+function customerDecision(){return byAgent('Customer Understanding Agent')?.decision||{}}
+function marketingDecision(){return byAgent('Marketing Agent')?.decision||{}}
+function complianceDecision(){return byAgent('Compliance Agent')?.decision||{}}
+function hotSku(){return invProducts().find(p=>p.stock_risk==='high')||invProducts()[0]||{}}
+function slowSku(){return invProducts().find(p=>(p.lifecycle||'').includes('off_season'))||invProducts().slice(-1)[0]||{}}
+function pricingBySku(sku){return pricingActions().find(a=>a.sku_id===sku)||{}}
+function pendingOrders(){return (run?.work_orders||[]).filter(o=>o.status==='PENDING_APPROVAL')}
+function readyOrders(){return (run?.work_orders||[]).filter(o=>o.status==='READY')}
+function completedOrders(){return (run?.work_orders||[]).filter(o=>o.status==='COMPLETED')}
+
+async function startRun(){
+  document.getElementById('status').classList.remove('hidden');
+  document.getElementById('content').classList.add('hidden');
+  document.getElementById('status').textContent=tr('Creating stateful run from /api/v1/runs/{season}...');
+  try{
+    const season=document.getElementById('season').value||'summer';
+    const res=await fetch(`/api/v1/runs/${season}?region=china`,{method:'POST'});
+    if(!res.ok)throw new Error(await res.text());
+    run=await res.json();
+    Object.keys(roleStates).forEach(k=>roleStates[k]=false);
+    render();
+  }catch(e){
+    document.getElementById('status').innerHTML=`<strong>${tr('Runtime not available.')}</strong><br>${e.message}<br><br>${tr('Start FastAPI and open')} <span class="mono">/focused</span>.`;
+  }
+}
+
+async function refresh(){
+  if(!run)return;
+  const res=await fetch(`/api/v1/runs/${run.run_id}/status`);
+  run=await res.json();
+  render();
+}
+
+function setView(v){
+  view=v;
+  document.querySelectorAll('.nav[data-view]').forEach(n=>n.classList.toggle('active',n.dataset.view===v));
+  render();
+}
+
+function guardrails(){
+  const consentRate=run?.customer_signals?.privacy_consent_rate??0.92;
+  const eligible=Math.round(decision.audience*consentRate);
+  const excluded=decision.audience-eligible;
+  const couponBudget=eligible*decision.coupon;
+  const marginStatus=decision.discount<=10?'pass':decision.discount<=15?'review':decision.discount<=20?'approval':'block';
+  const budgetStatus=couponBudget<=18000?'pass':couponBudget<=26000?'review':'approval';
+  const roleStatus=decision.discount<=10?'Store Manager':decision.discount<=15?'Category/Pricing Manager':'Finance + Category approval';
+  return {eligible,excluded,couponBudget,marginStatus,budgetStatus,roleStatus};
+}
+
+function impact(){
+  const hot=hotSku(), slow=slowSku(), g=guardrails();
+  const replenishment=Math.round((hot.recommended_replenishment||800)*decision.replenishPct/100);
+  const recoveredSales=replenishment*(hot.current_price||99)*0.62;
+  const releasedUnits=Math.round((slow.current_stock||540)*(decision.discount/100)*1.15);
+  const marginHit=Math.max(0,decision.discount-10)*0.7;
+  const customersRecovered=Math.round(g.eligible*(decision.coupon/20)*0.12);
+  const stockRisk=decision.replenishPct>=90?'Low':decision.replenishPct>=55?'Medium':'High';
+  return {replenishment,recoveredSales,releasedUnits,marginHit,customersRecovered,stockRisk};
+}
+function approvalsCaptured(){return Object.values(roleStates).filter(Boolean).length}
+function approvalRatio(){return Math.round((approvalsCaptured()/Object.keys(roleStates).length)*100)}
+function stockCoverage(p){
+  const current=Number(p.current_stock||0), safety=Number(p.safety_stock||1);
+  return Math.max(4, Math.min(100, Math.round(current/safety*100)));
+}
+
+function render(){
+  if(!run)return;
+  document.getElementById('status').classList.add('hidden');
+  const c=document.getElementById('content');
+  c.classList.remove('hidden');
+  c.innerHTML=headerCards()+({app:renderApp,sku:renderSkuPortfolio,data:renderData,ai:renderAI,governance:renderGovernance}[view]());
+  trText(c);
+}
+
+function headerCards(){
+  const imp=impact(), hot=hotSku(), slow=slowSku();
+  return `<section class="hero">
+    <div class="hero-card">
+      <span class="pill blue">Live run · ${run.run_id}</span>
+      <h2>3 decisions required before execution</h2>
+      <p>Shanghai SH-001 has a same-week demand spike for ${hot.name||'summer SKUs'} while ${slow.name||'off-season SKUs'} is tying up inventory. The system proposes actions, but humans own the business decisions.</p>
+      <div class="grid cols-3" style="margin-top:14px">
+        <div><span class="small">Stock risk</span><strong style="display:block;font-size:22px">${imp.stockRisk}</strong></div>
+        <div><span class="small">Opportunity</span><strong style="display:block;font-size:22px">${money(imp.recoveredSales)}</strong></div>
+        <div><span class="small">Approvals</span><strong style="display:block;font-size:22px">${approvalsCaptured()}/6</strong></div>
+      </div>
+    </div>
+    <div class="hero-side">
+      <div class="panel"><div class="panel-b"><div class="row-head"><b>Decision readiness</b><span class="pill ${approvalRatio()===100?'green':'amber'}">${approvalRatio()}%</span></div><div class="decision-progress" style="margin-top:10px"><span style="width:${approvalRatio()}%"></span></div></div></div>
+      <div class="panel"><div class="panel-b"><div class="row-head"><b>Work orders</b><span class="pill blue">${run.work_orders.length}</span></div><div class="muted small">${pendingOrders().length} pending · ${readyOrders().length} ready · ${completedOrders().length} completed</div></div></div>
+      <div class="panel"><div class="panel-b"><div class="row-head"><b>Governance status</b><span class="pill amber">${complianceDecision().compliance_status||'PASS_WITH_FLAGS'}</span></div><div class="muted small">Margin, coupon budget, consent, RBAC and traceability checked before execution.</div></div></div>
+    </div>
+  </section>`;
+}
+
+function renderApp(){
+  const hot=hotSku(), slow=slowSku(), imp=impact();
+  return `<section class="grid cols-main">
+    <div class="grid">
+      <div class="panel">
+        <div class="panel-h"><h2>Today's Action Board</h2><span class="pill red">Store SH-001 · Shanghai</span></div>
+        <div class="panel-b task-grid">
+          <div class="task-card red"><div class="task-icon">1</div><h3>Prevent stockout</h3><p class="muted small">${hot.name||'Contoso Air T-Shirt'}</p><div class="big">${hot.current_stock||140}/${hot.safety_stock||360}</div><span class="pill red">replenish ${imp.replenishment} units</span></div>
+          <div class="task-card amber"><div class="task-icon">2</div><h3>Release overstock</h3><p class="muted small">${slow.name||'Ultra Light Down Jacket'}</p><div class="big">${slow.current_stock||540} units</div><span class="pill amber">${decision.discount}% markdown proposal</span></div>
+          <div class="task-card green"><div class="task-icon">3</div><h3>Recover customers</h3><p class="muted small">High-intent and churn-risk members with valid consent.</p><div class="big">${guardrails().eligible}</div><span class="pill green">${imp.customersRecovered} likely recoveries</span></div>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-h"><h2>Product Situation</h2><span class="pill violet">SKU-level evidence</span></div>
+        <div class="panel-b grid cols-2">
+          ${productCard(hot,'red','Hot seller')}
+          ${productCard(slow,'amber','Slow mover')}
+        </div>
+      </div>
+      ${decisionControls()}
+      <div class="panel">
+        <div class="panel-h"><h2>Cross-functional Approvals</h2><button class="secondary" onclick="toggleAllRoles()">${approvalRatio()===100?'Clear All':'Approve All'}</button></div>
+        <div class="panel-b">${rolesHtml()}</div>
+      </div>
+      <div class="panel">
+        <div class="panel-h"><h2>Execution Queue</h2><div class="actions"><button class="secondary" onclick="approvePending()">Approve Pending</button><button class="secondary" onclick="completeReady()">Complete Ready</button></div></div>
+        <div class="panel-b">${ordersHtml()}</div>
+      </div>
+    </div>
+    <aside class="grid sticky">
+      ${nextActionPanel()}
+      ${guardrailPanel()}
+      ${decisionFlow()}
+    </aside>
+  </section>`;
+}
+
+function productCard(p,tone,label){
+  const coverage=stockCoverage(p);
+  const meterTone=tone==='red'?'red':tone==='amber'?'amber':'';
+  return `<div class="product-card">
+    <div class="sku-art ${tone==='amber'?'warm':''}">${(p.sku_id||'SKU').split('-')[0]}</div>
+    <div>
+      <div class="row-head"><b>${p.name||label}</b><span class="pill ${tone}">${label}</span></div>
+      <div class="muted small mono">${p.sku_id||'SKU'} · stock ${p.current_stock||0} · safety ${p.safety_stock||0}</div>
+      <div class="meter ${meterTone}"><span style="width:${coverage}%"></span></div>
+    </div>
+    <div class="metric" style="text-align:right"><strong>${coverage}%</strong><span class="muted small">coverage</span></div>
+  </div>`;
+}
+
+function decisionControls(){
+  const imp=impact(), g=guardrails();
+  return `<div class="panel">
+    <div class="panel-h"><h2>Decision Controls</h2><span class="pill violet">try the trade-offs</span></div>
+    <div class="panel-b grid cols-action">
+      <div class="decision-card"><h3>Replenish <span class="pill blue">${imp.replenishment} units</span></h3><div class="slider-line"><label>Quantity vs. stockout risk</label><input type="range" min="25" max="120" value="${decision.replenishPct}" oninput="decision.replenishPct=Number(this.value);render()"><b>${decision.replenishPct}%</b></div><p class="muted small">Higher quantity reduces lost sales but may create later inventory exposure.</p></div>
+      <div class="decision-card"><h3>Markdown <span class="pill amber">${decision.discount}% off</span></h3><div class="slider-line"><label>Discount vs. margin</label><input type="range" min="0" max="30" step="5" value="${decision.discount}" oninput="decision.discount=Number(this.value);render()"><b>${decision.discount}%</b></div><p class="muted small">Above 15% moves from pricing approval to finance/category approval.</p></div>
+      <div class="decision-card"><h3>Recover <span class="pill green">${g.eligible} customers</span></h3><div class="slider-line"><label>Coupon value</label><input type="range" min="0" max="50" step="5" value="${decision.coupon}" oninput="decision.coupon=Number(this.value);render()"><b>${money(decision.coupon)}</b></div><div class="select-line"><label>Audience size</label><input type="number" min="100" max="2000" value="${decision.audience}" onchange="decision.audience=Number(this.value);render()"></div></div>
+    </div>
+    <div class="panel-b" style="border-top:1px solid var(--line)"><div class="impact">
+      <div><span class="muted small">Sales opportunity protected</span><strong>${money(imp.recoveredSales)}</strong></div>
+      <div><span class="muted small">Inventory release estimate</span><strong>${imp.releasedUnits} units</strong></div>
+      <div><span class="muted small">Gross margin impact</span><strong>-${imp.marginHit.toFixed(1)}%</strong></div>
+      <div><span class="muted small">Customer recovery estimate</span><strong>${imp.customersRecovered}</strong></div>
+    </div></div>
+  </div>`;
+}
+
+function skuSignal(p){
+  const sales=p.baseline_daily_sales||0;
+  const demand=p.demand_forecast_7d||p.recent_daily_sales||[];
+  const last=Array.isArray(demand)&&demand.length?demand[demand.length-1]:sales;
+  if(p.stock_risk==='high')return {tone:'red',label:'Hot seller',score:'+ demand',note:'In-season hero SKU. Avoid broad discounts; protect price and replenish.'};
+  if((p.lifecycle||'').includes('off_season') || (p.clearance_discount_candidate_pct||0)>0)return {tone:'amber',label:'Clearance',score:'slow move',note:'Off-season or slow-moving SKU. Markdown is allowed within margin guardrails.'};
+  if(last>sales*1.15)return {tone:'green',label:'Hot sellers',score:'+ trend',note:'In-season hero SKU. Avoid broad discounts; protect price and replenish.'};
+  return {tone:'blue',label:'Watch list',score:'stable',note:'Stable SKU. Keep monitoring demand and inventory coverage.'};
+}
+function skuAction(p){
+  const price=pricingBySku(p.sku_id), signal=skuSignal(p);
+  if(signal.tone==='red')return {action:'Replenish / transfer',discount:'No discount',owner:'Supply Chain Planner',guardrail:'Price protect'};
+  if(signal.tone==='amber'){
+    const d=p.clearance_discount_candidate_pct||Math.max(0,Math.round(((price.current_price||p.current_price||0)-(price.recommended_price||p.current_price||0))/(price.current_price||p.current_price||1)*100));
+    const discount=d?`${d}%`:`${decision.discount}%`;
+    const owner=(parseInt(discount)||0)>15?'Finance + Category':'Category / Pricing Manager';
+    return {action:'Markdown clearance',discount,owner,guardrail:'Margin guardrail'};
+  }
+  return {action:'Monitor',discount:'No discount',owner:'Store Manager',guardrail:'Margin guardrail'};
+}
+function skuRows(filter='all'){
+  return invProducts().map(p=>({p,signal:skuSignal(p),act:skuAction(p)})).filter(x=>{
+    if(filter==='hot')return x.signal.tone==='red'||x.signal.label==='Hot sellers';
+    if(filter==='clearance')return x.signal.tone==='amber';
+    if(filter==='watch')return x.signal.tone!=='red'&&x.signal.tone!=='amber';
+    return true;
+  });
+}
+let skuFilter='all';
+function renderSkuPortfolio(){
+  const rows=skuRows(skuFilter);
+  const hot=skuRows('hot').length, clearance=skuRows('clearance').length, approvals=skuRows('clearance').filter(x=>x.act.owner!=='Store Manager').length;
+  return `<section class="grid">
+    <div class="panel">
+      <div class="panel-h">
+        <div><h2>All Category SKU Portfolio</h2><div class="muted small">Which products sell well, which need clearance, and what discount is allowed by margin guardrails.</div></div>
+        <div class="seg">
+          ${[['all','All SKUs'],['hot','Hot sellers'],['clearance','Clearance'],['watch','Watch list']].map(([id,label])=>`<button class="${skuFilter===id?'active':''}" onclick="skuFilter='${id}';render()">${label}</button>`).join('')}
+        </div>
+      </div>
+      <div class="panel-b grid cols-4">
+        <div class="action-card red"><span class="muted small">Replenishment candidates</span><strong>${hot}</strong><span class="pill red">stockout risk</span></div>
+        <div class="action-card amber"><span class="muted small">Clearance candidates</span><strong>${clearance}</strong><span class="pill amber">markdown pool</span></div>
+        <div class="action-card"><span class="muted small">Discount approvals</span><strong>${approvals}</strong><span class="pill violet">human required</span></div>
+        <div class="action-card green"><span class="muted small">Margin guardrail</span><strong>${decision.discount}%</strong><span class="pill green">current threshold</span></div>
+      </div>
+    </div>
+    <div class="panel"><div class="panel-b" style="overflow:auto">
+      <table class="sku-table">
+        <thead><tr><th>SKU / Product</th><th>Category</th><th>Lifecycle</th><th>Inventory Health</th><th>Sales Signal</th><th>Recommended Action</th><th>Discount</th><th>Approval Owner</th></tr></thead>
+        <tbody>${rows.map(({p,signal,act})=>skuRowHtml(p,signal,act)).join('')}</tbody>
+      </table>
+    </div></div>
+  </section>`;
+}
+function skuRowHtml(p,signal,act){
+  const coverage=stockCoverage(p);
+  const barTone=signal.tone==='red'?'red':signal.tone==='amber'?'amber':'';
+  return `<tr>
+    <td><div class="sku-name"><div class="mini-art ${signal.tone==='amber'?'clearance':signal.tone==='blue'?'watch':''}">${(p.sku_id||'SKU').split('-')[0]}</div><div><b>${p.name}</b><div class="muted small mono">${p.sku_id}</div></div></div></td>
+    <td>${p.category||'-'}</td>
+    <td><span class="pill ${signal.tone==='amber'?'amber':'blue'}">${p.lifecycle||'-'}</span></td>
+    <td><div class="bar ${barTone}"><span style="width:${coverage}%"></span></div><div class="muted small">${p.current_stock||0} / ${p.safety_stock||0} · ${coverage}%</div></td>
+    <td><span class="pill ${signal.tone==='red'?'red':signal.tone==='amber'?'amber':'green'}">${signal.label}</span><div class="muted small">${signal.note}</div></td>
+    <td><b>${act.action}</b><div class="muted small">${act.guardrail}</div></td>
+    <td><span class="pill ${act.discount==='No discount'?'green':'amber'}">${act.discount}</span></td>
+    <td>${act.owner}</td>
+  </tr>`;
+}
+
+function nextActionPanel(){
+  const ready=approvalRatio()===100;
+  return `<div class="next-box">
+    <b>${ready?'Ready to submit':'Next best action'}</b>
+    <div class="muted small">${ready?'All role approvals are captured. Submit the decision to convert pending items into executable work orders.':'Review the three decision controls, then capture approvals from Store, Regional Ops, Supply Chain, Category/Pricing, CRM and Compliance.'}</div>
+    <div class="choice-row"><button class="${ready?'good':'secondary'}" onclick="submitDecision()">${ready?'Submit Decision':'Submit after approvals'}</button><button class="secondary" onclick="setView('governance')">Review Guardrails</button></div>
+  </div>`;
+}
+
+function rolesHtml(){
+  const roles=[
+    ['store','SM','Store Manager','Confirms local demand, shelf execution and replenishment request.'],
+    ['regional','RO','Regional Ops','Approves cross-store transfer and store priority.'],
+    ['supply','SC','Supply Chain Planner','Confirms warehouse availability, ETA and transfer feasibility.'],
+    ['category','PR','Category / Pricing','Approves lifecycle status, markdown boundary and gross margin.'],
+    ['crm','CRM','CRM Manager','Approves customer recovery audience, channel and coupon budget.'],
+    ['compliance','GRC','Compliance / Risk','Validates consent, RBAC approval limits and AI traceability.']
+  ];
+  return roles.map(([id,abbr,name,desc])=>`<div class="role">
+    <div class="avatar">${abbr}</div>
+    <div><b>${name}</b><small>${desc}</small></div>
+    <div>
+      <span class="pill ${roleStates[id]?'green':'amber'}">${roleStates[id]?'approved':'waiting'}</span>
+      <button class="${roleStates[id]?'good':'secondary'}" style="margin-left:6px" onclick="roleStates.${id}=!roleStates.${id};render()">${roleStates[id]?'Undo':'Approve'}</button>
+    </div>
+  </div>`).join('');
+}
+
+function guardrailPanel(){
+  const g=guardrails(), comp=complianceDecision();
+  const marginClass=g.marginStatus==='pass'?'green':g.marginStatus==='review'?'amber':'red';
+  const budgetClass=g.budgetStatus==='pass'?'green':g.budgetStatus==='review'?'amber':'red';
+  return `<div class="panel">
+    <div class="panel-h"><h2>Governance Guardrails</h2><span class="pill ${comp.compliance_status==='PASS'?'green':'amber'}">${comp.compliance_status||'PASS_WITH_FLAGS'}</span></div>
+    <div class="panel-b guard">
+      <div class="item"><span class="dot ${marginClass==='green'?'':marginClass}"></span><div><b>Margin & markdown</b><span class="muted small">Discount ${decision.discount}% · authority: ${g.roleStatus}</span></div><span class="pill ${marginClass}">${g.marginStatus}</span></div>
+      <div class="item"><span class="dot green"></span><div><b>Customer consent</b><span class="muted small">${g.eligible} eligible, ${g.excluded} excluded from campaign</span></div><span class="pill green">passed</span></div>
+      <div class="item"><span class="dot ${budgetClass==='green'?'':budgetClass}"></span><div><b>Promotion budget</b><span class="muted small">Coupon budget ${money(g.couponBudget)}</span></div><span class="pill ${budgetClass}">${g.budgetStatus}</span></div>
+      <div class="item"><span class="dot amber"></span><div><b>Human approval</b><span class="muted small">${Object.values(roleStates).filter(Boolean).length}/6 role approvals captured</span></div><span class="pill amber">required</span></div>
+      <div class="item"><span class="dot green"></span><div><b>AI traceability</b><span class="muted small">Prompts, inputs, outputs, work orders and audit log retained in run state.</span></div><span class="pill green">auditable</span></div>
+    </div>
+  </div>`;
+}
+
+function decisionFlow(){
+  return `<div class="panel">
+    <div class="panel-h"><h2>How The Loop Works</h2></div>
+    <div class="panel-b timeline">
+      ${['Alert','Decision packet','Human approvals','Execute work orders','Learn from outcomes'].map((s,i)=>`<div class="timeline-step ${i<2?'done':''}"><span>${i+1}</span><div><b>${s}</b><div class="muted small">${['Demand, inventory, customer and weather signals trigger a store alert.','Agents produce replenishment, markdown and recovery recommendations.','Humans approve according to role, budget, margin and consent guardrails.','Work orders execute after approval and are persisted.','Campaign response and inventory outcomes feed back into memory.'][i]}</div></div></div>`).join('')}
+    </div>
+  </div>`;
+}
+
+function ordersHtml(){
+  const orders=run.work_orders||[];
+  if(!orders.length)return '<div class="empty">No work orders.</div>';
+  return `<table class="table"><thead><tr><th>Order</th><th>Business owner</th><th>Status</th><th>Action</th></tr></thead><tbody>${orders.map(o=>`<tr>
+    <td><b>${o.title_en||o.title}</b><div class="muted small">${o.type} · ${o.agent}</div></td>
+    <td>${o.owner}</td>
+    <td><span class="pill ${o.status==='COMPLETED'?'green':o.status==='READY'?'blue':'amber'}">${o.status}</span></td>
+    <td>${o.status==='PENDING_APPROVAL'?`<button class="secondary" onclick="approveOrder('${o.id}')">Approve</button>`:o.status==='READY'?`<button class="secondary" onclick="completeOrder('${o.id}')">Complete</button>`:'Done'}</td>
+  </tr>`).join('')}</tbody></table>`;
+}
+
+function renderData(){
+  const sources=run.event_pipeline||[], features=run.feature_store||[], memory=run.shared_memory||[];
+  return `<section class="grid">
+    <div class="panel"><div class="panel-h"><h2>Data Products Feeding the Decision</h2><span class="pill blue">${sources.length} sources</span></div>
+      <div class="panel-b grid cols-4">${sources.map(s=>`<div class="source-card"><b>${s.source}</b><p class="muted small">${s.type} · ${s.event_hub}</p><div>${(s.features||[]).map(f=>`<span class="pill">${f}</span>`).join('')}</div></div>`).join('')}</div>
+    </div>
+    <div class="grid cols-2">
+      <div class="panel"><div class="panel-h"><h2>Feature Store</h2></div><div class="panel-b">${features.map(f=>`<div class="row"><b>${f.feature_group}</b><div class="muted small">${f.store} · ${f.freshness}</div><div>${f.features.map(x=>`<span class="pill blue">${x}</span>`).join('')}</div></div>`).join('')}</div></div>
+      <div class="panel"><div class="panel-h"><h2>Shared Agent Memory</h2></div><div class="panel-b">${memory.map(m=>`<div class="row"><div class="row-head"><b>${m.key}</b><span class="pill violet">${m.writer} -> ${m.reader}</span></div><div class="muted">${m.value}</div></div>`).join('')}</div></div>
+    </div>
+  </section>`;
+}
+
+function renderAI(){
+  const traces=run.execution_trace||[], registry=run.agent_registry||{};
+  return `<section class="grid cols-main">
+    <div class="panel"><div class="panel-h"><h2>AI Service Calls by Agent</h2><span class="pill blue">Azure trace</span></div>
+      <div class="panel-b">${traces.slice(0,8).map(t=>`<div class="service"><b>${t.agent}</b><div class="muted">${(t.azure_service_calls||[]).slice(0,3).map(c=>c.service+' / '+c.operation).join(' · ')}</div><span class="pill ${t.status==='COMPLETED'?'green':'amber'}">${t.status}</span></div>`).join('')}</div>
+    </div>
+    <div class="panel"><div class="panel-h"><h2>Application to AI Mapping</h2></div>
+      <div class="panel-b">${Object.values(registry).filter(a=>['Inventory Intelligence','Dynamic Pricing','Customer Intelligence','Personalization','Marketing Automation','Governance & Compliance'].includes(a.domain)).map(a=>`<div class="row"><b>${a.domain}</b><div class="muted small">${a.capabilities.slice(0,4).join(' · ')}</div><span class="pill ${a.risk_level==='critical'||a.risk_level==='high'?'amber':'blue'}">${a.risk_level} risk</span></div>`).join('')}</div>
+    </div>
+  </section>`;
+}
+
+function renderGovernance(){
+  const comp=complianceDecision(), audit=run.audit_log||[];
+  return `<section class="grid cols-main">
+    <div class="grid">
+      ${guardrailPanel()}
+      <div class="panel"><div class="panel-h"><h2>Compliance Decision</h2><span class="pill amber">${(comp.flags||[]).length} flags</span></div>
+        <div class="panel-b">
+          ${(comp.flags||[]).length?(comp.flags||[]).map(f=>`<div class="row"><b>${f.issue}</b><div class="muted small">${f.agent} · ${f.severity}</div></div>`).join(''):'<div class="row"><b>No blocking compliance issue</b><div class="muted">Consent, data residency, auditability and approval thresholds are checked before execution.</div></div>'}
+          <div class="row"><b>Evidence</b><div>${(byAgent('Compliance Agent').evidence||[]).map(e=>`<span class="pill blue">${e}</span>`).join('')}</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="panel"><div class="panel-h"><h2>Audit Log</h2><button class="secondary" onclick="refresh()">Refresh</button></div>
+      <div class="panel-b">${audit.map(a=>`<div class="row"><div class="row-head"><b>${a.action}</b><span class="mono small">${a.time}</span></div><div class="muted">${a.actor} · ${a.detail}</div></div>`).join('')}</div>
+    </div>
+  </section>`;
+}
+
+function toggleAllRoles(){
+  const target=!Object.values(roleStates).every(Boolean);
+  Object.keys(roleStates).forEach(k=>roleStates[k]=target);
+  render();
+}
+async function approveOrder(id){await fetch(`/api/v1/runs/${run.run_id}/work-orders/${id}/approve`,{method:'POST'});await refresh()}
+async function completeOrder(id){const res=await fetch(`/api/v1/runs/${run.run_id}/work-orders/${id}/complete`,{method:'POST'});if(!res.ok)alert((await res.json()).detail);await refresh()}
+async function approvePending(){for(const o of pendingOrders())await fetch(`/api/v1/runs/${run.run_id}/work-orders/${o.id}/approve`,{method:'POST'});await refresh()}
+async function completeReady(){for(const o of readyOrders())await fetch(`/api/v1/runs/${run.run_id}/work-orders/${o.id}/complete`,{method:'POST'});await refresh()}
+async function submitDecision(){
+  if(!Object.values(roleStates).every(Boolean)){
+    alert('Capture all role approvals first: store, regional ops, supply chain, category/pricing, CRM, and compliance.');
+    return;
+  }
+  await approvePending();
+}
+
+startRun();
+trText();
+</script>
+</body>
+</html>
