@@ -1,4 +1,4 @@
-# Autonomous Retail Intelligence Agent Platform
+# Retail Merchandise Operations Decision Case Platform
 
 > **AMA Capstone Project — Project 46**
 > Multi-Agent Intelligent Retail Platform based on Contoso Fashion (Contoso Retail)
@@ -15,17 +15,49 @@
 
 ### Overview
 
-This project designs a multi-agent intelligent retail platform powered by 5 AI Agents, using Contoso Fashion as the prototype to demonstrate cross-channel personalization, inventory optimization, and dynamic pricing.
+This project implements a realistic fashion-retail exception handling and decision platform powered by five AI capability domains. A shared Retail Decision Case connects planning policy, operational signals, multi-agent reasoning, controlled execution, and measurable feedback.
 
-### Key Metrics
+### Operational Proof Metrics
 
-| Metric | Baseline | Target | Driver |
-|--------|----------|--------|--------|
-| Same-store sales growth | +11.7% (2025) | +40% | Agent-driven personalization |
-| Inventory waste | Industry avg 30%+ | -50% | Agent demand forecasting |
-| Customer satisfaction | N/A | 85% | Agent experience optimization |
-| Customer lifetime value | 200M fan base | +60% | Agent relationship management |
-| E-commerce penetration | 25% (Greater China) | 35%+ | Agent cross-channel recommendations |
+| Metric | Prototype evidence |
+|--------|--------------------|
+| Decision latency | Case detection to versioned Decision Packet |
+| Inventory safety | ATP deducts reservations, safety stock, frozen and outbound units |
+| Decision quality | Low-confidence stock pauses commercial action and creates a cycle-count task |
+| Governance | Role-based approval, policy lineage and immutable audit events |
+| Execution reliability | Idempotency, retry, partial-failure receipt and compensation path |
+
+Sales uplift and margin impact are not claimed by the prototype. They require a time-boxed test/control store experiment.
+
+### Current Demo (v3) — Retail Decision Cases
+
+The production-shaped demo supports two bounded workflows:
+
+1. `BROKEN_SIZE_STOCKOUT`: ATP, size breaks, cycle count, replenishment/transfer and `NO_CAMPAIGN`.
+2. `SEASONAL_OVERSTOCK`: transfer, promotion versus markdown, margin guardrails and store-capacity constraints.
+
+Five agents participate only when a case needs their domain judgment. Deterministic services calculate stock, margin, consent and policy facts; the LLM explains evidence and recommendations but does not invent transactional truth.
+
+```bash
+uvicorn src.api:app --host 0.0.0.0 --port 8080
+# Open http://localhost:8080/workflow
+```
+
+The UI follows real operating roles instead of exposing the orchestration model:
+
+- **Store Manager** receives concrete store tasks such as cycle counts and submits physical truth.
+- **Regional Manager** reviews store impact and approves transfers or replenishment within regional authority.
+- **International Management** compares market planning contexts and approves strategic promotion, pricing, and resource-allocation decisions.
+- **AI Decision Intelligence** shows a seven-day demand range, discount sensitivity, option comparison, channel supply caps, five-agent collaboration, guardrails, and post-decision learning checkpoints.
+- Technical Agent output, packet IDs, and policy versions stay inside on-demand audit details.
+
+The current UI also integrates the useful capabilities from the earlier platform without mixing simulation with production execution:
+
+- **SKU Portfolio** connects case-level variants to seasonal assortment planning.
+- **Data & Signals** maps source systems and feature groups to time-stamped Case evidence.
+- **Agent Capabilities** links the five-agent registry to actual Case participation, skip and block states.
+- **Scenario Lab** preserves the four-season model as a read-only planning sandbox.
+- `/` and `/workflow` serve the integrated platform; the former full-platform demo remains available at `/legacy`.
 
 ### Architecture
 
@@ -78,9 +110,9 @@ The included `infra/main.bicep` and `.github/workflows/azure-container-apps.yml`
 See [Azure-native deployment](docs/en/azure-native-deployment.md).
 
 
-### Scenario-driven demo (v4) — 15-Day Fashion Retail Launch
+### Legacy compatibility demo (v4) — 15-Day Fashion Retail Launch
 
-The latest demo is inspired by full-chain fashion retail AI automation benchmarks such as "6 months → 15 days" launch-cycle compression. It reframes the project as a **Fashion Retail AI Operating System**: an Agent Boss coordinates trend insight, product planning, AIGC visual generation, CTR testing, consumer-language copywriting, live commerce, inventory, pricing, marketing, finance ROI review, compliance and human approval.
+This earlier scenario is retained for API compatibility. It is no longer the primary Project 46 operating model.
 
 Key demo loops:
 
@@ -143,6 +175,7 @@ See also:
 | [Agent Design](docs/en/agents.md) | 5 Agent detailed design |
 | [Agent Collaboration](docs/en/agent-collaboration.md) | Handoff / Reflection / State Graph patterns |
 | [Architecture Decisions](docs/en/architecture-decisions.md) | 8 ADRs with rationale |
+| [Project 46 Architecture Decision Document](docs/en/project-46-architecture-decision-document.md) | Review-ready scenario assumptions and architecture decisions |
 | [Contoso Fashion Case Study](docs/en/uniqlo-case-study.md) | Prototype analysis |
 | [Asia Specifics](docs/en/asia-specific.md) | Regional considerations |
 | [Security Architecture](docs/en/security-architecture.md) | Zero-trust design |
@@ -192,17 +225,49 @@ MIT License — For academic research only
 
 ### 项目概述
 
-本项目设计并实现一个由 5 个 AI Agent 驱动的智能零售平台，以Contoso 服装店为原型，展示如何通过 Agent 架构实现跨渠道个性化体验、库存优化和动态定价。
+本项目实现一个面向服装零售真实经营异常的五 Agent 协同决策平台。系统以统一的 Retail Decision Case 串联计划政策、经营信号、多 Agent 判断、受控执行和结果反馈，而不是让 AI 直接自动经营门店。
 
-### 核心指标
+### 可验证运营指标
 
-| 指标 | 基线 | 目标 | 提升幅度 |
-|------|------|------|---------|
-| 同店销售增长 | +11.7% (2025) | +40% | Agent 个性化驱动 |
-| 库存浪费 | 行业平均 30%+ | -50% | Agent 需求预测 |
-| 客户满意度 | 未公开 | 85% | Agent 体验优化 |
-| 客户终身价值 | 2 亿粉丝基础 | +60% | Agent 持续关系管理 |
-| 电商渗透率 | 25% (大中华区) | 35%+ | Agent 跨渠道推荐 |
+| 指标 | 原型证据 |
+|------|----------|
+| 决策时效 | 从异常形成到生成带版本的 Decision Packet |
+| 库存安全 | ATP 扣除软预留、安全库存、冻结品和待调出库存 |
+| 决策质量 | 库存可信度不足时暂停商业动作并创建门店盘点任务 |
+| 治理完整性 | 角色审批、政策版本和完整审计事件 |
+| 执行可靠性 | 幂等、重试、部分失败回执和补偿路径 |
+
+系统不把销售或毛利增量作为已经实现的结果；业务增量必须通过 test/control 门店实验验证。
+
+### 当前演示（v3）— Retail Decision Case
+
+当前主版本聚焦两个边界清晰的真实流程：
+
+1. `BROKEN_SIZE_STOCKOUT`：ATP、断码、盘点、补货/调拨和 `NO_CAMPAIGN`。
+2. `SEASONAL_OVERSTOCK`：调拨、促销与 markdown、毛利护栏和门店容量约束。
+
+五个 Agent 根据 Case 类型按需参与。库存、毛利、授权和政策事实由确定性服务计算，LLM 只负责证据解释与建议表达。
+
+```bash
+uvicorn src.api:app --host 0.0.0.0 --port 8080
+# 打开 http://localhost:8080/workflow
+```
+
+界面按照真实岗位职责设计，不要求业务用户理解底层编排：
+
+- **门店店长**：只接收盘点、收货等门店任务并提交实物真值。
+- **区域经理**：查看区域影响，在权限内审批调拨和补货。
+- **跨国经营管理层**：比较各国家/区域规划上下文，审批促销、价格例外与资源配置等重大经营方案。
+- **AI 决策智能**：展示 7 天需求区间、折扣敏感度、方案比较、渠道供货上限、五 Agent 协作、护栏和决策后的学习节点。
+- Agent 输出、决策包 ID 和政策版本默认收进按需展开的审计详情。
+
+当前界面也整合了原系统中有价值的能力，但不会再把沙盘和生产执行混在一起：
+
+- **SKU 组合**：关联 Case 商品变体与季节商品规划。
+- **数据与信号**：把原数据源和 Feature Store 映射到带时间快照的 Case 证据。
+- **Agent 能力**：将五 Agent Registry 与实际参与、跳过和阻断状态关联。
+- **四季沙盘**：保留原四季模型，定位为只读计划模拟。
+- `/` 与 `/workflow` 进入统一平台，原完整演示保留在 `/legacy`。
 
 ### 架构设计
 

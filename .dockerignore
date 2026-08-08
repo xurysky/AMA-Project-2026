@@ -1,0 +1,15 @@
+.env
+.env.*
+!.env.example
+.venv/
+venv/
+__pycache__/
+*.pyc
+.git/
+.github/
+*.pptx
+!src/static/AMA-panel-story.pptx
+*.pdf
+*.docx
+*.zip
+logs/

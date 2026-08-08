@@ -10,6 +10,8 @@
     .brandmark{width:42px;height:42px;border-radius:14px;background:linear-gradient(135deg,#e60012 0%,#ff4d5a 45%,#111827 100%);box-shadow:0 14px 30px rgb(0 0 0/.22);display:grid;place-items:center;position:relative;overflow:hidden;flex:0 0 auto}
     .brandmark svg{width:30px;height:30px;display:block}.brandmark:after{content:"";position:absolute;inset:-40% -20% auto auto;width:32px;height:80px;background:rgb(255 255 255/.28);transform:rotate(28deg)}
     .brandtext{display:grid;gap:2px}.brandtext strong{font-size:14px;line-height:1.05;letter-spacing:.01em}.brandtext span{font-size:11px;color:oklch(0.72 0.025 255);font-weight:650}.status-dot{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 0 4px oklch(0.58 0.15 145/.15);display:inline-block;margin-right:6px}
+    .workflow-back{display:flex;align-items:center;justify-content:center;gap:8px;margin:0 4px 16px;padding:11px 12px;border-radius:12px;background:white;color:var(--ink);font-weight:850;text-decoration:none;box-shadow:0 12px 26px rgb(0 0 0/.20)}
+    .workflow-back:hover{filter:brightness(.96)}
   </style>
 </head>
 <body>
@@ -28,6 +30,7 @@
         <span><i class="status-dot"></i>Live demo ready</span>
       </div>
     </div>
+    <a class="workflow-back" href="/workflow">← 返回主平台 / Back to Workflow</a>
     <div style="padding:6px 12px;margin:10px 0 4px;font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:oklch(0.55 0.025 255);font-weight:700">Platform</div>
     <div class="navitem active" data-view="overview" onclick="setView('overview')">🌐 Platform Overview</div>
     <div style="padding:6px 12px;margin:16px 0 4px;font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:oklch(0.55 0.025 255);font-weight:700">Main Story Flow</div>

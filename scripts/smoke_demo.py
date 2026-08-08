@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Pre-demo smoke test for AMA stateful demo."""
+"""Pre-demo smoke test for the retail case platform and legacy APIs."""
 import json
 import sys
 import time
@@ -43,15 +43,99 @@ assert health["status"] == "healthy"
 checks.append("health")
 
 home = req("/")
-for needle in ["startRun", "approveOrder", "completeOrder", "/api/v1/runs/", "Agent Runtime", "KPI"]:
+for needle in [
+    "Retail Merchandise Intelligence",
+    "Retail Decision Copilot",
+    "Human–AI workflow",
+    "function renderHome",
+    "function renderCaseWorkspace",
+    "function startTour",
+    "SKU Portfolio",
+    "Scenario Lab",
+    "/api/v1/platform-context",
+]:
     if needle not in home:
         raise AssertionError(f"frontend missing {needle}")
-checks.append("frontend-html-and-js")
+checks.append("integrated-home-html-and-js")
+
+legacy = req("/legacy")
+for needle in ["startRun", "approveOrder", "completeOrder", "/api/v1/runs/", "Agent Runtime"]:
+    if needle not in legacy:
+        raise AssertionError(f"legacy frontend missing {needle}")
+checks.append("legacy-compatibility-ui")
+
+workflow = req("/workflow")
+for needle in ["Retail Merchandise Intelligence", "Exception Queue", "decisionPacket:'Decision packet'", "/api/v1/cases"]:
+    if needle not in workflow:
+        raise AssertionError(f"workflow missing {needle}")
+checks.append("case-workflow-html-and-js")
 
 api = req("/api")
 assert api["status"] == "running"
 assert len(api["agents"]) == 5
 checks.append("api-root")
+
+context = req("/api/v1/platform-context")
+if len(context["core_agents"]) != 5 or len(context["seasons"]) != 4:
+    raise AssertionError("platform context does not preserve the five-agent/four-season contract")
+if set(context["shared_controls"]) != {"Orchestrator", "Policy and Compliance"}:
+    raise AssertionError("platform shared controls are incomplete")
+checks.append("integrated-platform-context")
+
+req("/api/v1/cases/reset", method="POST")
+case_summary = req("/api/v1/cases/summary")
+if case_summary["total"] != 3:
+    raise AssertionError(f"expected 3 seeded cases, got {case_summary['total']}")
+
+cases = req("/api/v1/cases")["cases"]
+case_ids = {case["case_id"] for case in cases}
+if case_ids != {"CASE-SH-001", "CASE-SH-002", "CASE-SH-003"}:
+    raise AssertionError(f"unexpected cases: {case_ids}")
+checks.append("case-list-and-summary")
+
+# A low-confidence stock case must be verified by the store before approval.
+low_confidence = req("/api/v1/cases/CASE-SH-002")
+count_action = next(action for action in low_confidence["actions"] if action["action_type"] == "STORE_CYCLE_COUNT")
+blocked = req(
+    f"/api/v1/cases/CASE-SH-002/actions/{count_action['action_id']}/execute",
+    method="POST",
+    body={"actor": "Store Associate", "observed_count": 58},
+    expect=(409,),
+)
+if "WAITING_FOR_STORE_ACCEPTANCE" not in blocked.get("detail", ""):
+    raise AssertionError("cycle count execution was not blocked before store acceptance")
+
+req(
+    f"/api/v1/cases/CASE-SH-002/actions/{count_action['action_id']}/accept",
+    method="POST",
+    body={"actor": "Store Associate"},
+)
+reassessed = req(
+    f"/api/v1/cases/CASE-SH-002/actions/{count_action['action_id']}/execute",
+    method="POST",
+    body={"actor": "Store Associate", "observed_count": 58},
+)
+if reassessed["status"] != "WAITING_FOR_APPROVAL" or reassessed["decision_packet"]["version"] != 2:
+    raise AssertionError("cycle count did not create a versioned decision packet")
+checks.append("stock-verification-and-reassessment")
+
+wrong_role = req(
+    "/api/v1/cases/CASE-SH-002/approve",
+    method="POST",
+    body={"actor": "Demo User", "role": "Store Associate", "comment": "wrong role"},
+    expect=(409,),
+)
+if "Regional Operations Manager" not in wrong_role.get("detail", ""):
+    raise AssertionError("approval role guard did not reject the wrong role")
+
+approved_case = req(
+    "/api/v1/cases/CASE-SH-002/approve",
+    method="POST",
+    body={"actor": "Demo User", "role": "Regional Operations Manager", "comment": "ATP and capacity checked"},
+)
+if approved_case["status"] != "READY_FOR_EXECUTION":
+    raise AssertionError("case approval did not set READY_FOR_EXECUTION")
+checks.append("case-role-approval")
 
 seasons = req("/api/v1/seasons")["seasons"]
 season_ids = [s.get("id", s) if isinstance(s, dict) else s for s in seasons]

@@ -15,9 +15,12 @@ from src.azure_services import (
     DEPLOYMENT,
     agent_decide,
     orchestrator_decompose,
+    query_cases,
     query_customers,
+    read_case,
     read_run,
     run_store_enabled,
+    upsert_case,
     upsert_customer,
     upsert_run,
 )
@@ -26,15 +29,19 @@ from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 
 from src.scenario_engine import RetailScenarioEngine
+from src.retail_case_engine import CaseConflict, RetailCaseEngine
+from src.decision_intelligence import build_decision_intelligence
 
 BASE_DIR = Path(__file__).resolve().parent
 STATIC_DIR = BASE_DIR / "static"
 RUNS: Dict[str, Dict[str, Any]] = {}
+CASE_ENGINE = RetailCaseEngine()
+CASES_INITIALIZED = False
 
 app = FastAPI(
     title="AMA Retail Agent Platform",
-    description="Autonomous Retail Intelligence Agent Platform - scenario-driven 5 Agent decision loop",
-    version="2.1.0"
+    description="Retail merchandise operations case platform with a five-agent decision lifecycle",
+    version="3.2.0"
 )
 
 app.add_middleware(
@@ -51,6 +58,47 @@ if STATIC_DIR.exists():
 
 def now_iso() -> str:
     return datetime.now(timezone.utc).isoformat()
+
+
+def ensure_cases() -> None:
+    """Load persisted cases once, or create the deterministic review dataset."""
+    global CASES_INITIALIZED
+    if CASES_INITIALIZED:
+        return
+    persisted = query_cases(region="china")
+    if persisted:
+        CASE_ENGINE.load(persisted)
+    else:
+        for case in CASE_ENGINE.seed():
+            upsert_case(case)
+    CASES_INITIALIZED = True
+
+
+def get_case_or_404(case_id: str) -> Dict[str, Any]:
+    ensure_cases()
+    case = CASE_ENGINE.get_case(case_id)
+    if case:
+        return case
+    persisted = read_case(case_id)
+    if persisted:
+        CASE_ENGINE.load([persisted])
+        return persisted
+    raise HTTPException(status_code=404, detail="Retail case not found")
+
+
+def persist_case(case: Dict[str, Any]) -> Dict[str, Any]:
+    upsert_case(case)
+    return case
+
+
+def case_transition(callable_, *args, **kwargs) -> Dict[str, Any]:
+    """Translate domain transition errors into API-friendly responses."""
+    try:
+        return persist_case(callable_(*args, **kwargs))
+    except KeyError as exc:
+        raise HTTPException(status_code=404, detail=f"Case or action not found: {exc.args[0]}") from exc
+    except CaseConflict as exc:
+        raise HTTPException(status_code=409, detail=str(exc)) from exc
 
 
 def build_work_orders(result: Dict[str, Any]) -> List[Dict[str, Any]]:
@@ -1117,6 +1165,19 @@ def get_run_or_404(run_id: str) -> Dict[str, Any]:
 
 @app.get("/", response_class=HTMLResponse)
 async def home():
+    index = STATIC_DIR / "retail_ops.html"
+    return HTMLResponse(
+        content=index.read_text(encoding="utf-8"),
+        headers={
+            "Cache-Control": "no-store, no-cache, must-revalidate, max-age=0",
+            "Pragma": "no-cache",
+            "Expires": "0",
+        },
+    )
+
+
+@app.get("/legacy", response_class=HTMLResponse)
+async def legacy_platform_page():
     index = STATIC_DIR / "index.html"
     return HTMLResponse(
         content=index.read_text(encoding="utf-8"),
@@ -1130,7 +1191,7 @@ async def home():
 
 @app.get("/workflow", response_class=HTMLResponse)
 async def workflow_page():
-    index = STATIC_DIR / "index.html"
+    index = STATIC_DIR / "retail_ops.html"
     return HTMLResponse(
         content=index.read_text(encoding="utf-8"),
         headers={
@@ -1159,12 +1220,15 @@ async def root():
     return {
         "service": "AMA Retail Agent Platform",
         "status": "running",
-        "version": "2.1.0",
-        "positioning": "Operational seasonal simulation with stateful approvals and work orders",
+        "version": "3.2.0",
+        "positioning": "Integrated retail merchandise intelligence, exception handling and controlled execution",
         "agents": ["Inventory Agent", "Pricing Agent", "Customer Understanding Agent", "Personalization Agent", "Marketing Agent"],
-        "core_scenario": "Seasonal Retail Decision Cycle",
-        "ui": "/",
+        "core_scenario": "Shanghai merchandise operations: broken-size stockout and seasonal overstock",
+        "ui": "/workflow",
+        "legacy_ui": "/legacy",
         "focused_panel_ui": "/focused",
+        "case_api": "/api/v1/cases",
+        "platform_context_api": "/api/v1/platform-context",
         "scenario_api": "/api/v1/season/{spring|summer|autumn|winter}",
         "operations_api": "/api/v1/runs/{run_id}/work-orders/{order_id}/{approve|complete}",
         "seasons": RetailScenarioEngine().list_seasons(),
@@ -1205,12 +1269,107 @@ async def customer360_query(filter: str = None, limit: int = 10):
 
 @app.get("/health")
 async def health():
+    ensure_cases()
     return {
         "status": "healthy",
         "timestamp": now_iso(),
         "active_runs": len(RUNS),
+        "active_cases": CASE_ENGINE.summary()["total"],
         "state_store": "cosmos_db" if run_store_enabled() else "memory",
     }
+
+
+@app.get("/api/v1/cases")
+async def list_retail_cases(status: str = None, case_type: str = None, severity: str = None):
+    ensure_cases()
+    return CASE_ENGINE.list_cases(status=status, case_type=case_type, severity=severity)
+
+
+@app.get("/api/v1/cases/summary")
+async def retail_case_summary():
+    ensure_cases()
+    return CASE_ENGINE.summary()
+
+
+@app.post("/api/v1/cases/reset")
+async def reset_retail_cases():
+    global CASES_INITIALIZED
+    cases = CASE_ENGINE.reset()
+    CASES_INITIALIZED = True
+    for case in cases:
+        upsert_case(case)
+    return CASE_ENGINE.list_cases()
+
+
+@app.get("/api/v1/cases/{case_id}")
+async def retail_case_detail(case_id: str):
+    return get_case_or_404(case_id)
+
+
+@app.get("/api/v1/cases/{case_id}/decision-intelligence")
+async def retail_case_decision_intelligence(case_id: str):
+    """Read-only hybrid AI forecast, option comparison, and supply plan."""
+    return build_decision_intelligence(get_case_or_404(case_id))
+
+
+@app.post("/api/v1/cases/{case_id}/approve")
+async def approve_retail_case(case_id: str, body: dict):
+    get_case_or_404(case_id)
+    return case_transition(
+        CASE_ENGINE.approve_packet,
+        case_id,
+        body.get("actor", "Yuan Wang"),
+        body.get("role", "Regional Operations Manager"),
+        body.get("comment", "Approved after reviewing evidence and guardrails."),
+    )
+
+
+@app.post("/api/v1/cases/{case_id}/reject")
+async def reject_retail_case(case_id: str, body: dict):
+    get_case_or_404(case_id)
+    return case_transition(
+        CASE_ENGINE.reject_packet,
+        case_id,
+        body.get("actor", "Yuan Wang"),
+        body.get("role", "Regional Operations Manager"),
+        body.get("comment", "Rejected; revise the recommendation."),
+    )
+
+
+@app.post("/api/v1/cases/{case_id}/actions/{action_id}/accept")
+async def accept_store_action(case_id: str, action_id: str, body: dict):
+    get_case_or_404(case_id)
+    return case_transition(
+        CASE_ENGINE.accept_action,
+        case_id,
+        action_id,
+        body.get("actor", "Store Manager"),
+    )
+
+
+@app.post("/api/v1/cases/{case_id}/actions/{action_id}/reject")
+async def reject_store_action(case_id: str, action_id: str, body: dict):
+    get_case_or_404(case_id)
+    return case_transition(
+        CASE_ENGINE.reject_action,
+        case_id,
+        action_id,
+        body.get("actor", "Store Manager"),
+        body.get("reason", "Store cannot complete the task in the requested window."),
+    )
+
+
+@app.post("/api/v1/cases/{case_id}/actions/{action_id}/execute")
+async def execute_retail_action(case_id: str, action_id: str, body: dict = None):
+    get_case_or_404(case_id)
+    payload = body or {}
+    return case_transition(
+        CASE_ENGINE.execute_action,
+        case_id,
+        action_id,
+        payload.get("actor", "Operations Console"),
+        payload.get("observed_count"),
+    )
 
 
 @app.get("/api/v1/scenario/cold-snap")
@@ -1297,6 +1456,42 @@ async def agent_registry():
 @app.get("/api/v1/data-sources")
 async def data_sources():
     return {"sources": DATA_SOURCES, "feature_store": FEATURE_STORE}
+
+
+@app.get("/api/v1/platform-context")
+async def platform_context():
+    """Expose the legacy platform capabilities as governed context for Retail Cases."""
+    core_agent_names = [
+        "Inventory Agent",
+        "Pricing Agent",
+        "Customer Understanding Agent",
+        "Personalization Agent",
+        "Marketing Agent",
+    ]
+    return {
+        "operating_model": "Retail Decision Case",
+        "core_agents": {name: AGENT_REGISTRY[name] for name in core_agent_names},
+        "shared_controls": {
+            "Orchestrator": AGENT_REGISTRY["Orchestrator Agent"],
+            "Policy and Compliance": AGENT_REGISTRY["Compliance Agent"],
+        },
+        "data_sources": DATA_SOURCES,
+        "feature_store": FEATURE_STORE,
+        "seasons": RetailScenarioEngine().list_seasons(),
+        "execution_systems": [
+            {"system": "ERP", "responsibility": "transfer requests and merchandise master data"},
+            {"system": "WMS", "responsibility": "replenishment picks, shipment and compensation"},
+            {"system": "OMS", "responsibility": "ATP, soft reservations and fulfillment promises"},
+            {"system": "CRM", "responsibility": "consent-aware audience activation"},
+            {"system": "Store Task", "responsibility": "cycle count, receiving, shelving and evidence"},
+            {"system": "Fabric", "responsibility": "operational metrics and test/control measurement"},
+        ],
+        "boundaries": {
+            "production": "Only an approved Retail Decision Case can create executable actions.",
+            "simulation": "Seasonal scenarios are planning sandboxes and never write production actions.",
+            "llm": "LLM output is explanatory; ATP, margin, consent and approval facts are deterministic.",
+        },
+    }
 
 
 @app.post("/api/v1/runs/{run_id}/reset")

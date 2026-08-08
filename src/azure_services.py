@@ -24,7 +24,7 @@ def get_openai():
         _openai_client = AzureOpenAI(
             azure_endpoint=os.getenv("AZURE_OPENAI_ENDPOINT", "https://japaneast.api.cognitive.microsoft.com/"),
             api_key=os.getenv("AZURE_OPENAI_KEY") or os.getenv("AZURE_OPENAI_API_KEY", ""),
-            api_version="2024-12-01-preview",
+            api_version=os.getenv("AZURE_OPENAI_API_VERSION", "2025-04-01-preview"),
         )
     return _openai_client
 
@@ -135,6 +135,61 @@ def read_run(run_id: str, region: str = None) -> dict | None:
         return rows[0] if rows else None
     except Exception:
         return None
+
+
+def upsert_case(case: dict) -> dict:
+    """Persist a retail decision case in the operational state container."""
+    if not RUN_STORE_ENABLED:
+        return {"status": "skipped", "store": "memory"}
+    try:
+        container = get_cosmos(RUNS_CONTAINER)
+        item = dict(case)
+        item["id"] = item["case_id"]
+        item["partition_key"] = item.get("region", "global")
+        item["document_type"] = "retail_case"
+        container.upsert_item(item)
+        return {"status": "ok", "store": "cosmos_db", "container": RUNS_CONTAINER}
+    except Exception as e:
+        return {"status": "error", "detail": str(e), "container": RUNS_CONTAINER}
+
+
+def read_case(case_id: str, region: str = None) -> dict | None:
+    """Read a retail case, using a cross-partition query when region is unknown."""
+    if not RUN_STORE_ENABLED:
+        return None
+    try:
+        container = get_cosmos(RUNS_CONTAINER)
+        if region:
+            return container.read_item(item=case_id, partition_key=region)
+        query = "SELECT * FROM c WHERE c.case_id = @case_id AND c.document_type = 'retail_case'"
+        params = [{"name": "@case_id", "value": case_id}]
+        rows = list(container.query_items(query=query, parameters=params, enable_cross_partition_query=True))
+        return rows[0] if rows else None
+    except Exception:
+        return None
+
+
+def query_cases(region: str = None, max_items: int = 100) -> list:
+    """Load persisted retail cases for the operations queue."""
+    if not RUN_STORE_ENABLED:
+        return []
+    try:
+        container = get_cosmos(RUNS_CONTAINER)
+        query = "SELECT * FROM c WHERE c.document_type = 'retail_case'"
+        params = []
+        if region:
+            query += " AND c.region = @region"
+            params.append({"name": "@region", "value": region})
+        return list(
+            container.query_items(
+                query=query,
+                parameters=params,
+                max_item_count=max_items,
+                enable_cross_partition_query=True,
+            )
+        )
+    except Exception:
+        return []
 
 # ── Agent Decision with GPT-4o ──
 def agent_decide(agent_name: str, context: str, task: str) -> dict:
