@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "observed_date": "2026-11-03",
+  "status": "released-isolated-pilot",
+  "application": "AMA isolated workflow pilot",
+  "url": "https://demo.mscontoso.cn/ama-workflow/",
+  "original_ama_changed": false,
+  "region": "japaneast",
+  "resource_group": "rg-ama-retail-review",
+  "resources": {
+    "function_app": "fn-ama-workflow-lab-1103",
+    "plan": "Flex Consumption",
+    "always_ready": 0,
+    "instance_memory_mb": 2048,
+    "platform_max_instances": 40,
+    "scheduler": "dts-ama-workflow-lab",
+    "scheduler_sku": "Consumption",
+    "task_hub": "amalab",
+    "storage": "amaworkflowlab1103",
+    "storage_sku": "Standard_LRS"
+  },
+  "scheduler_network": {
+    "public_tls": true,
+    "ip_allowlist": [
+      "0.0.0.0/0"
+    ],
+    "authentication": "Managed Identity + Azure RBAC, not anonymous"
+  },
+  "gateway": {
+    "app": "ca-eag-hub",
+    "resource_group": "eag-innovation",
+    "revision": "ca-eag-hub--amaflow1103",
+    "image": "craagentic55179.azurecr.io/eag-hub@sha256:a593034cdbcafbdfc667032fd50c5a3bfe13f69a7d1fe8eea1a45c438524cc4f",
+    "rollback_revision": "ca-eag-hub--polish1102",
+    "traffic_percent": 100,
+    "rollback_revision_active": false
+  },
+  "function_source_artifact": {
+    "zip_sha256": "438c5efb7e422d413cb0c73f411544e8b31f78cdc4a9ee99ffcef58c404ef39c",
+    "deployment_id": "17bdd170-401b-474c-bc0e-6ce83f859a98",
+    "source_commit": null,
+    "provenance": "Uploaded source ZIP + remote build, separate from original AMA image"
+  },
+  "limits": {
+    "production_actions": 0,
+    "runs_per_owner_per_day": 20,
+    "concurrent_runs_per_owner": 1,
+    "model_calls_per_run_max": 1,
+    "model_output_tokens_max": 800,
+    "model_timeout_seconds": 75,
+    "review_validity_hours": 1
+  },
+  "verification_limits": [
+    "Owner Entra/MFA sign-in not impersonated",
+    "Not a drag-and-drop editor",
+    "No production ERP/CRM write integration",
+    "No automatic Blob retention cleanup or expiry termination",
+    "Application quotas are not an Azure spending cap",
+    "SDK integration packages use pinned prerelease versions"
+  ],
+  "observed_at_utc": "2026-11-03T09:53:39.867616+00:00",
+  "verification": {
+    "real_model_summary_tokens": 257,
+    "approve_and_reject_cloud": true,
+    "restart_then_browser_approval": true,
+    "ui_assets_sha256": {
+      "index.html": "e978299d90fce06b35b6fdb599cdb476b5ee710b599125fdb287641aec84981d",
+      "style.css": "7a6ff2d368bc51e75c0b527481b75977b5aeaa51ae79857cedb5ecc0e4814de6",
+      "app.js": "d4d7f8f946a6f8cbfa8ed357ff03104be8dfa60f00e9164d49d195eb0ad40ab3"
+    },
+    "original_ama_unchanged": true
+  }
+}

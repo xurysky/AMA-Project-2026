@@ -1,0 +1,266 @@
+{
+  "data_kind": "synthetic_demo",
+  "source": "AMA RetailCaseEngine._overstock_case, not production sales",
+  "case": {
+    "case_id": "CASE-SH-003",
+    "document_type": "retail_case",
+    "case_type": "SEASONAL_OVERSTOCK",
+    "dedupe_key": "SEASONAL_OVERSTOCK:SH-014:SPR-JKT-BE-SM:2026-W31",
+    "title": "Spring light jacket overstock",
+    "status": "WAITING_FOR_APPROVAL",
+    "severity": "high",
+    "region": "china",
+    "city": "Shanghai",
+    "store_id": "SH-014",
+    "store_name": "Shanghai Qibao Store",
+    "store_cluster": "suburban_family",
+    "owner_role": "Merchandise Manager",
+    "lead_agent": "Inventory Agent",
+    "sla_due_at": "2026-11-03T17:13:05.525840+00:00",
+    "created_at": "2026-11-03T09:13:05.525777+00:00",
+    "updated_at": "2026-11-03T09:13:05.525777+00:00",
+    "as_of_time": "2026-11-03T09:13:05.525777+00:00",
+    "planning_policy_version": "MERCH-SPRING-EXIT-2026.07",
+    "consent_policy_version": "PIPL-MKT-2026.02",
+    "variant": {
+      "style_id": "SPR-JKT-2026",
+      "color_id": "BEG",
+      "size_id": "S-M",
+      "variant_id": "SPR-JKT-2026-BEG-SM",
+      "gtin": "06912345671015",
+      "product_name": "Pocketable UV Protection Parka",
+      "color_name": "Beige",
+      "lifecycle": "clearance",
+      "category": "womens_outerwear",
+      "unit_cost_cny": 92.0,
+      "current_price_cny": 249.0,
+      "margin_floor_pct": 38.0,
+      "master_data_version": "MDM-2026.07.31"
+    },
+    "inventory": {
+      "physical_on_hand": 1180,
+      "soft_reserved": 40,
+      "safety_stock": 60,
+      "blocked_or_quarantined": 80,
+      "pending_transfer_out": 0,
+      "eligible_confirmed_inbound": 0,
+      "returned_pending_inspection": 65,
+      "sellable_atp": 1000,
+      "future_atp": 1000,
+      "future_atp_at": null,
+      "demand_units_per_day": 28.0,
+      "days_of_supply": 35.7,
+      "inventory_confidence": 0.91,
+      "as_of_time": "2026-11-03T09:13:05.525777+00:00",
+      "freshness_minutes": 15
+    },
+    "return_disposition": {
+      "pending_inspection": 65,
+      "sellable": 18,
+      "quarantined": 7,
+      "return_to_vendor": 4
+    },
+    "store_constraints": {
+      "backroom_capacity_units": 760,
+      "backroom_utilization_pct": 92,
+      "display_capacity_units": 84,
+      "task_load_minutes": 160,
+      "task_capacity_minutes": 180
+    },
+    "evidence": [
+      {
+        "source": "POS",
+        "observed_at": "2026-11-03T09:13:05.525777+00:00",
+        "summary": "Four-week rate of sale fell to 28 units/day after the season transition.",
+        "quality": "verified"
+      },
+      {
+        "source": "Returns",
+        "observed_at": "2026-11-03T09:13:05.525777+00:00",
+        "summary": "65 returned units await inspection and are excluded from ATP.",
+        "quality": "verified"
+      },
+      {
+        "source": "Store Task",
+        "observed_at": "2026-11-03T09:13:05.525777+00:00",
+        "summary": "Backroom utilization is 92%; additional inbound stock is blocked.",
+        "quality": "verified"
+      }
+    ],
+    "agent_decisions": [
+      {
+        "agent": "Inventory Agent",
+        "role": "lead",
+        "status": "COMPLETED",
+        "recommendation": "Transfer 320 units to outlet demand before deeper markdown.",
+        "evidence_refs": [
+          "POS",
+          "Returns",
+          "Store Task"
+        ],
+        "confidence": 0.91,
+        "model_version": "rules+retail-ops-v1",
+        "rule_version": "retail-policy-2026.08",
+        "prompt_version": null,
+        "blockers": []
+      },
+      {
+        "agent": "Pricing Agent",
+        "role": "required",
+        "status": "COMPLETED",
+        "recommendation": "Allow a targeted 15% voucher; block a 30% chain-wide markdown.",
+        "evidence_refs": [
+          "MERCH-SPRING-EXIT-2026.07"
+        ],
+        "confidence": 0.95,
+        "model_version": "rules+retail-ops-v1",
+        "rule_version": "retail-policy-2026.08",
+        "prompt_version": null,
+        "blockers": []
+      },
+      {
+        "agent": "Customer Understanding Agent",
+        "role": "support",
+        "status": "COMPLETED",
+        "recommendation": "Build only a consented audience with recent light-outerwear intent.",
+        "evidence_refs": [
+          "PIPL-MKT-2026.02"
+        ],
+        "confidence": 0.96,
+        "model_version": "rules+retail-ops-v1",
+        "rule_version": "retail-policy-2026.08",
+        "prompt_version": null,
+        "blockers": []
+      },
+      {
+        "agent": "Personalization Agent",
+        "role": "support",
+        "status": "COMPLETED",
+        "recommendation": "Recommend only sellable S/M variants at stores with confirmed ATP.",
+        "evidence_refs": [
+          "ATP",
+          "Returns"
+        ],
+        "confidence": 0.93,
+        "model_version": "rules+retail-ops-v1",
+        "rule_version": "retail-policy-2026.08",
+        "prompt_version": null,
+        "blockers": []
+      },
+      {
+        "agent": "Marketing Agent",
+        "role": "optional",
+        "status": "DRAFT_ONLY",
+        "recommendation": "Create a limited member-voucher draft; do not send before approval.",
+        "evidence_refs": [
+          "PIPL-MKT-2026.02",
+          "ATP"
+        ],
+        "confidence": 0.92,
+        "model_version": "rules+retail-ops-v1",
+        "rule_version": "retail-policy-2026.08",
+        "prompt_version": null,
+        "blockers": []
+      }
+    ],
+    "decision_packet": {
+      "packet_id": "DP-SH-003-V1",
+      "version": 1,
+      "status": "PENDING_APPROVAL",
+      "recommendation": "Transfer 320 units first and prepare a targeted 15% member voucher; block the 30% markdown.",
+      "rationale": [
+        "Sellable ATP is 1,000 units and backroom utilization is 92%.",
+        "Returned units pending inspection are excluded from sellable supply.",
+        "A 30% markdown breaches the current margin floor."
+      ],
+      "alternatives": [
+        "Transfer only and reassess after seven days.",
+        "Take no action and accept space and aging-stock cost."
+      ],
+      "blockers": [
+        "Chain-wide 30% markdown blocked by margin policy."
+      ],
+      "expires_at": "2026-11-03T21:13:05.525889+00:00",
+      "policy_version": "retail-policy-2026.08",
+      "proposed_action_ids": [
+        "ACT-SH-003-01",
+        "ACT-SH-003-02",
+        "ACT-SH-003-03"
+      ],
+      "required_approval_roles": [
+        "Merchandise Manager"
+      ]
+    },
+    "actions": [
+      {
+        "action_id": "ACT-SH-003-01",
+        "action_type": "TRANSFER_REQUEST",
+        "title": "Transfer 320 light jackets to two outlet stores",
+        "owner_role": "Regional Operations Manager",
+        "target_system": "WMS_TRANSFER",
+        "status": "PENDING_APPROVAL",
+        "quantity": 320,
+        "due_at": "2026-11-04T03:13:05.525793+00:00",
+        "requires_approval": true,
+        "required_approval_role": "Merchandise Manager",
+        "requires_store_acceptance": false,
+        "idempotency_key": "CASE-SH-003:ACT-SH-003-01",
+        "retryable": true,
+        "attempts": 0,
+        "failure_mode": "fail_first_attempt",
+        "rejection_reason": null
+      },
+      {
+        "action_id": "ACT-SH-003-02",
+        "action_type": "MEMBER_VOUCHER_DRAFT",
+        "title": "Create a consent-filtered 15% member voucher draft",
+        "owner_role": "CRM Manager",
+        "target_system": "CRM_CAMPAIGN_DRAFT",
+        "status": "PENDING_APPROVAL",
+        "quantity": null,
+        "due_at": "2026-11-04T05:13:05.525819+00:00",
+        "requires_approval": true,
+        "required_approval_role": "Merchandise Manager",
+        "requires_store_acceptance": false,
+        "idempotency_key": "CASE-SH-003:ACT-SH-003-02",
+        "retryable": true,
+        "attempts": 0,
+        "failure_mode": null,
+        "rejection_reason": null
+      },
+      {
+        "action_id": "ACT-SH-003-03",
+        "action_type": "MARKDOWN",
+        "title": "Apply a 30% chain-wide markdown",
+        "owner_role": "Pricing Manager",
+        "target_system": "PRICING",
+        "status": "BLOCKED",
+        "quantity": null,
+        "due_at": "2026-11-04T09:13:05.525830+00:00",
+        "requires_approval": true,
+        "required_approval_role": "Finance Controller",
+        "requires_store_acceptance": false,
+        "idempotency_key": "CASE-SH-003:ACT-SH-003-03",
+        "retryable": false,
+        "attempts": 0,
+        "failure_mode": null,
+        "rejection_reason": "Projected margin falls below the approved floor."
+      }
+    ],
+    "approvals": [],
+    "execution_receipts": [],
+    "audit_log": [
+      {
+        "time": "2026-11-03T09:13:05.525777+00:00",
+        "actor": "Case Formation Service",
+        "action": "CASE_CREATED",
+        "detail": "Aging stock and store-space thresholds breached"
+      }
+    ],
+    "kpi_observations": {
+      "decision_packet_minutes": 11,
+      "blocked_margin_breach": true,
+      "measurement_type": "demo_observed"
+    }
+  }
+}
